@@ -7,8 +7,13 @@
         <h3>Featured Tags</h3>
         <ul data-bind="tags" data-attr="list"></ul>
       </div>
-      <div v-for="record in records" :key="record.name">
-        <a class="block-item" :href="record.iscn">
+      <div id="block-list">
+        <a
+          v-for="record in records"
+          :key="record.iscn"
+          :href="`/iscn/${record.iscn}`"
+          class="block-item"
+        >
           <svg
             width="16"
             height="16"
@@ -42,8 +47,23 @@ export default {
   data: () => ({
     records: [
       {
-        iscn: 'iscnID',
-        name: 'The name here',
+        iscn: 'iscn://1234566780',
+        name: 'First ISCN Record',
+        timestamp: '2022-05-02 21:26:00',
+      },
+      {
+        iscn: 'iscn://234456174312934',
+        name: 'Second ISCN Record',
+        timestamp: '2022-05-02 21:26:00',
+      },
+      {
+        iscn: 'iscn://234456174312934',
+        name: 'Second ISCN Record',
+        timestamp: '2022-05-02 21:26:00',
+      },
+      {
+        iscn: 'iscn://234456174312934',
+        name: 'Second ISCN Record',
         timestamp: '2022-05-02 21:26:00',
       },
     ],
