@@ -50,34 +50,19 @@ export default {
   css: ['@/assets/css/index.css'],
   data: () => ({
     tags: ['LikeCoin', 'DHK', 'Cosmos'],
-    records: [
-      {
-        iscn: 'iscn://1234566780',
-        name: 'First ISCN Record',
-        timestamp: '2022-05-02 21:26:00',
-      },
-      {
-        iscn: 'iscn://234456174312934',
-        name: 'Second ISCN Record',
-        timestamp: '2022-05-02 21:26:00',
-      },
-      {
-        iscn: 'iscn://234456174312934',
-        name: 'Second ISCN Record',
-        timestamp: '2022-05-02 21:26:00',
-      },
-      {
-        iscn: 'iscn://234456174312934',
-        name: 'Second ISCN Record',
-        timestamp: '2022-05-02 21:26:00',
-      },
-    ],
+    records: [],
   }),
 
-  // async fetch() {
-  //   const records = await this.$http.$get(
-  //     `https://mainnet-node.like.co/iscn/records?limit=12`
-  //   )
-  // },
+  async fetch() {
+    const res = await this.$axios.$get(`/iscn/records?limit=12`)
+    this.records = res.records.map((record) => {
+      const { data } = record
+      const datetime = new Date(data.recordTimestamp)
+      const timestamp = datetime.toLocaleString()
+      const iscn = data['@id']
+      const content = data.contentMetadata
+      return { iscn, timestamp, ...content }
+    })
+  },
 }
 </script>
