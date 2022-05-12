@@ -5,7 +5,11 @@
       <div><a class="gradient-text" href="/">ISCN Browser</a></div>
       <div class="tags">
         <h3>Featured Tags</h3>
-        <ul data-bind="tags" data-attr="list"></ul>
+        <ul data-bind="tags" data-attr="list">
+          <li v-for="tag in tags" :key="tag">
+            <a :href="`/tags/${tag}`">{{ tag }}</a>
+          </li>
+        </ul>
       </div>
       <div id="block-list">
         <a
@@ -45,6 +49,7 @@ export default {
   name: 'IndexPage',
   css: ['@/assets/css/index.css'],
   data: () => ({
+    tags: ['LikeCoin', 'DHK', 'Cosmos'],
     records: [
       {
         iscn: 'iscn://1234566780',
