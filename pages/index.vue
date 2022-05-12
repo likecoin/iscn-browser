@@ -4,10 +4,10 @@
     <div class="container">
       <div><a class="gradient-text" href="/">ISCN Browser</a></div>
       <div class="tags">
-        <h3>Featured Tags</h3>
-        <ul data-bind="tags" data-attr="list">
-          <li v-for="tag in tags" :key="tag">
-            <a :href="`/tags/${tag}`">{{ tag }}</a>
+        <h3>Featured Keywords</h3>
+        <ul>
+          <li v-for="keyword in keywords" :key="keyword">
+            <a :href="`/keywords/${keyword}`">{{ keyword }}</a>
           </li>
         </ul>
       </div>
@@ -49,7 +49,7 @@ export default {
   name: 'IndexPage',
   css: ['@/assets/css/index.css'],
   data: () => ({
-    tags: ['LikeCoin', 'DHK', 'Cosmos'],
+    keywords: ['LikeCoin', 'DHK', 'Cosmos'],
     records: [],
   }),
 
@@ -59,7 +59,7 @@ export default {
       const { data } = record
       const datetime = new Date(data.recordTimestamp)
       const timestamp = datetime.toLocaleString()
-      const iscn = data['@id']
+      const iscn = encodeURIComponent(data['@id'])
       const content = data.contentMetadata
       return { iscn, timestamp, ...content }
     })
