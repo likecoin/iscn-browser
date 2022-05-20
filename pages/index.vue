@@ -2,7 +2,7 @@
   <div>
     <header></header>
     <div class="container">
-      <div><a class="gradient-text" href="/">ISCN Browser</a></div>
+      <div><NuxtLink class="gradient-text" to="/">ISCN Browser</NuxtLink></div>
       <div class="tags">
         <h3>Featured Keywords</h3>
         <ul>
@@ -12,10 +12,10 @@
         </ul>
       </div>
       <div id="block-list">
-        <a
+        <NuxtLink
           v-for="record in records"
           :key="record.iscn"
-          :href="`/iscn/${record.iscn}`"
+          :to="`/iscn/${record.iscn}`"
           class="block-item"
         >
           <svg
@@ -38,7 +38,7 @@
             <div class="time-stamp strong">Publish date</div>
             <p class="time-stamp">{{ record.timestamp }}</p>
           </div>
-        </a>
+        </NuxtLink>
       </div>
     </div>
   </div>

@@ -6,10 +6,15 @@
     <p data-bind="description|descrption"></p>
     <p>
       ISCN: {{ record.iscn }}
-      <a target="_blank" :href="`https://app.like.co/view/${record.iscn}`">
+      <a
+        target="_blank"
+        :href="`https://app.like.co/view/${encodeURIComponent(record.iscn)}`"
+      >
         Open on app.like.co
       </a>
     </p>
+
+    <p>{{ record.description }}</p>
 
     <p>
       <a target="_blank" :href="record.url">{{ record.url }}</a>
@@ -19,35 +24,40 @@
 
     <p>
       Owned by:
-      <a :href="`/owner/${record.owner}`">
+      <NuxtLink :to="`/owner/${encodeURIComponent(record.owner)}`">
         {{ record.owner }}
-      </a>
+      </NuxtLink>
     </p>
 
-    <p>Keywords:</p>
-    <ul>
-      <li v-for="keyword in record.keywords" :key="keyword">
-        <a :href="`/keywords/${keyword}`">
-          {{ keyword }}
-        </a>
-      </li>
-    </ul>
+    <div v-if="record.keywords.length == 0">
+      <h3>Keywords:</h3>
+      <ul>
+        <li v-for="keyword in record.keywords" :key="keyword">
+          <NuxtLink :to="`/keywords/${encodeURIComponent(keyword)}`">
+            {{ keyword }}
+          </NuxtLink>
+        </li>
+      </ul>
+    </div>
+    <p v-else>Keywords: There is no keywords</p>
 
     <p>Content Fingerprints:</p>
     <ul data-bind="contentFingerprints" data-attr="list">
       <li v-for="fingerprint in record.contentFingerprints" :key="fingerprint">
-        <a target="_blank" :href="`/fingerprints/${fingerprint}`">
+        <NuxtLink :to="`/fingerprints/${encodeURIComponent(fingerprint)}`">
           {{ fingerprint }}
-        </a>
+        </NuxtLink>
       </li>
     </ul>
 
     <p>Stakeholders:</p>
     <ul data-bind="stakeholders" data-attr="list">
       <li v-for="holder in record.stakeholders" :key="holder.entity.name">
-        <a :href="`/stakeholders/${holder.entity.name}`">
+        <NuxtLink
+          :to="`/stakeholders/${encodeURIComponent(holder.entity.name)}`"
+        >
           {{ holder.entity.name }}
-        </a>
+        </NuxtLink>
       </li>
     </ul>
   </div>
@@ -78,11 +88,14 @@ export default {
       recordTimestamp,
       stakeholders,
     } = record.data
-    const { keywords } = contentMetadata
+    const { name, url, description, keywords } = contentMetadata
 
     const keywordList = keywords.split(',')
     this.record = {
-      ...contentMetadata,
+      name,
+      url,
+      description,
+      type: contentMetadata['@type'],
       owner,
       recordTimestamp,
       iscn: iscnId,
