@@ -27,7 +27,7 @@
     <p>Keywords:</p>
     <ul>
       <li v-for="keyword in record.keywords" :key="keyword">
-        <a :href="`/keyword/${keyword}`">
+        <a :href="`/keywords/${keyword}`">
           {{ keyword }}
         </a>
       </li>
@@ -35,18 +35,18 @@
 
     <p>Content Fingerprints:</p>
     <ul data-bind="contentFingerprints" data-attr="list">
-      <li>
-        <a target="_blank" data-attr="href" data-bind="link">
-          <span data-bind="fingerprint"></span>
+      <li v-for="fingerprint in record.contentFingerprints" :key="fingerprint">
+        <a target="_blank" :href="`/fingerprints/${fingerprint}`">
+          {{ fingerprint }}
         </a>
       </li>
     </ul>
 
     <p>Stakeholders:</p>
     <ul data-bind="stakeholders" data-attr="list">
-      <li>
-        <a data-bind="link" data-attr="href">
-          <span data-bind="name"></span>
+      <li v-for="holder in record.stakeholders" :key="holder.entity.name">
+        <a :href="`/stakeholders/${holder.entity.name}`">
+          {{ holder.entity.name }}
         </a>
       </li>
     </ul>
@@ -66,5 +66,30 @@ export default {
       keywords: ['test', 'example', 'likecoin'],
     },
   }),
+
+  async fetch() {
+    const iscnId = this.$route.params.iscnId
+    const res = await this.$axios.$get(`/iscn/records?iscn_id=${iscnId}`)
+    const record = res.records[0]
+    const {
+      owner,
+      contentMetadata,
+      contentFingerprints,
+      recordTimestamp,
+      stakeholders,
+    } = record.data
+    const { keywords } = contentMetadata
+
+    const keywordList = keywords.split(',')
+    this.record = {
+      ...contentMetadata,
+      owner,
+      recordTimestamp,
+      iscn: iscnId,
+      keywords: keywordList,
+      contentFingerprints,
+      stakeholders,
+    }
+  },
 }
 </script>
