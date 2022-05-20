@@ -43,7 +43,7 @@ export default {
   async fetch() {
     const page = Number(this.$route.query.page)
     const limit = 12
-    const url = `${this.$props.url}?limit=${limit}&page=${
+    const url = `${this.$props.url}&limit=${limit}&page=${
       !isNaN(page) ? page : 1
     }`
     console.log(url)

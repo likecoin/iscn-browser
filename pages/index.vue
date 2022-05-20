@@ -11,10 +11,9 @@
 <script>
 export default {
   name: 'IndexPage',
-  css: ['@/assets/css/index.css'],
   data() {
     return {
-      url: '/iscn/records',
+      url: '/iscn/records?',
     }
   },
 }
