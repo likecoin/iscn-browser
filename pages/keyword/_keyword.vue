@@ -14,7 +14,7 @@ export default {
   data() {
     const keyword = this.$route.params.keyword
     return {
-      url: `/iscn/records?keyword=${keyword}`,
+      url: `/iscn/records?keywords=${keyword}`,
     }
   },
 }
