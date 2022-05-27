@@ -31,11 +31,11 @@
       </NuxtLink>
     </p>
 
-    <div v-if="record.keywords.length == 0">
+    <div v-if="record.keywords.length != 0">
       <h3>Keywords:</h3>
       <ul>
         <li v-for="keyword in record.keywords" :key="keyword">
-          <NuxtLink :to="`/keywords/${encodeURIComponent(keyword)}`">
+          <NuxtLink :to="`/keyword/${encodeURIComponent(keyword)}`">
             {{ keyword }}
           </NuxtLink>
         </li>
@@ -46,7 +46,7 @@
     <p>Content Fingerprints:</p>
     <ul data-bind="contentFingerprints" data-attr="list">
       <li v-for="fingerprint in record.contentFingerprints" :key="fingerprint">
-        <NuxtLink :to="`/fingerprints/${encodeURIComponent(fingerprint)}`">
+        <NuxtLink :to="`/fingerprint/${encodeURIComponent(fingerprint)}`">
           {{ fingerprint }}
         </NuxtLink>
       </li>
@@ -56,7 +56,7 @@
     <ul data-bind="stakeholders" data-attr="list">
       <li v-for="holder in record.stakeholders" :key="holder.entity.name">
         <NuxtLink
-          :to="`/stakeholders/${encodeURIComponent(holder.entity.name)}`"
+          :to="`/stakeholder/${encodeURIComponent(holder.entity.name)}`"
         >
           {{ holder.entity.name }}
         </NuxtLink>
@@ -92,7 +92,11 @@ export default {
     } = record.data
     const { name, url, description, keywords } = contentMetadata
 
-    const keywordList = keywords.split(',')
+    const keywordList = keywords
+      .split(',')
+      .map((k) => k.trim())
+      .filter((k) => k !== '')
+    console.log(keywordList)
     this.record = {
       name,
       url,
