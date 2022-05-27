@@ -1,5 +1,7 @@
 <template>
-  <div id="block-list">
+  <p v-if="$fetchState.pending">Loading...</p>
+  <p v-else-if="$fetchState.error">An error occurs...</p>
+  <div v-else id="block-list">
     <NuxtLink
       v-for="record in records"
       :key="record.iscn"
@@ -27,6 +29,10 @@
         <p class="time-stamp">{{ record.timestamp }}</p>
       </div>
     </NuxtLink>
+    <div>
+      <NuxtLink :to="previous">Previous</NuxtLink>
+      <NuxtLink :to="next">Next</NuxtLink>
+    </div>
   </div>
 </template>
 
@@ -38,14 +44,17 @@ export default {
   data() {
     return {
       records: [],
+      next: '',
+      previous: '',
     }
   },
   async fetch() {
-    const page = Number(this.$route.query.page)
+    let page = Number(this.$route.query.page)
+    if (isNaN(page)) page = 1
     const limit = 12
-    const url = `${this.$props.url}&limit=${limit}&page=${
-      !isNaN(page) ? page : 1
-    }`
+    const url = `${this.$props.url}&limit=${limit}&page=${page}`
+    this.next = `${this.$route.path}?page=${page + 1}`
+    this.previous = `${this.$route.path}?page=${page - 1}`
     console.log(url)
     const res = await this.$axios.$get(url)
     this.records = res.records.map((record) => {

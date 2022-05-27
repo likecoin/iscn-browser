@@ -1,6 +1,8 @@
 <template>
   <!-- <div id="detail">loading...</div> -->
-  <div id="detail">
+  <p v-if="$fetchState.pending">Loading...</p>
+  <p v-else-if="$fetchState.error">An error occurs :(</p>
+  <div v-else id="detail">
     <h1>{{ record.name }}</h1>
     <p data-bind="recordTimestamp"></p>
     <p data-bind="description|descrption"></p>
