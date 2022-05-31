@@ -54,9 +54,9 @@
           v-for="fingerprint in record.contentFingerprints"
           :key="fingerprint"
         >
-          <NuxtLink :to="`/fingerprint/${encodeURIComponent(fingerprint)}`">
+          <a :href="fingerprintLink(fingerprint)" target="blank">
             {{ fingerprint }}
-          </NuxtLink>
+          </a>
         </li>
       </ul>
     </div>
@@ -64,7 +64,9 @@
     <div class="stakehodlers">
       <h3>Stakeholders:</h3>
       <ul
-        v-if="record.stakeholders.length != 1"
+        v-if="
+          record.stakeholders !== undefined && record.stakeholders.length != 1
+        "
         data-bind="stakeholders"
         data-attr="list"
       >
@@ -94,6 +96,21 @@ export default {
       keywords: ['test', 'example', 'likecoin'],
     },
   }),
+  methods: {
+    fingerprintLink(fingerprint) {
+      const [schema, value] = fingerprint.split('://')
+      switch (schema) {
+        case 'ipfs':
+          return `https://infura-ipfs.io/ipfs/${value}`
+
+        case 'ar':
+          return `https://arweave.net/${value}`
+
+        default:
+          return `/fingerprint/${encodeURIComponent(fingerprint)}`
+      }
+    },
+  },
 
   async fetch() {
     const iscnId = this.$route.params.iscnId
