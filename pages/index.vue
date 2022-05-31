@@ -1,10 +1,7 @@
 <template>
   <div>
-    <MainHeader />
-    <div>
-      <TagList />
-      <ISCNList :url="url" />
-    </div>
+    <TagList />
+    <ISCNList :url="url" />
   </div>
 </template>
 

@@ -43,25 +43,41 @@
     </div>
     <p v-else>Keywords: There is no keywords</p>
 
-    <p>Content Fingerprints:</p>
-    <ul data-bind="contentFingerprints" data-attr="list">
-      <li v-for="fingerprint in record.contentFingerprints" :key="fingerprint">
-        <NuxtLink :to="`/fingerprint/${encodeURIComponent(fingerprint)}`">
-          {{ fingerprint }}
-        </NuxtLink>
-      </li>
-    </ul>
-
-    <p>Stakeholders:</p>
-    <ul data-bind="stakeholders" data-attr="list">
-      <li v-for="holder in record.stakeholders" :key="holder.entity.name">
-        <NuxtLink
-          :to="`/stakeholder/${encodeURIComponent(holder.entity.name)}`"
+    <div class="fingerprint">
+      <p>Content Fingerprints:</p>
+      <ul
+        v-if="record.contentFingerprints.length != 1"
+        data-bind="contentFingerprints"
+        data-attr="list"
+      >
+        <li
+          v-for="fingerprint in record.contentFingerprints"
+          :key="fingerprint"
         >
-          {{ holder.entity.name }}
-        </NuxtLink>
-      </li>
-    </ul>
+          <NuxtLink :to="`/fingerprint/${encodeURIComponent(fingerprint)}`">
+            {{ fingerprint }}
+          </NuxtLink>
+        </li>
+      </ul>
+    </div>
+
+    <div class="stakehodlers">
+      <h3>Stakeholders:</h3>
+      <ul
+        v-if="record.stakeholders.length != 1"
+        data-bind="stakeholders"
+        data-attr="list"
+      >
+        <li v-for="holder in record.stakeholders" :key="holder.entity.name">
+          <NuxtLink
+            :to="`/stakeholder/${encodeURIComponent(holder.entity.name)}`"
+          >
+            {{ holder.entity.name }}
+          </NuxtLink>
+        </li>
+      </ul>
+      <p v-else>None</p>
+    </div>
   </div>
 </template>
 

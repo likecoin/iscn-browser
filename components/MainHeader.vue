@@ -1,7 +1,9 @@
 <template>
-  <header>
-    <div><NuxtLink class="gradient-text" to="/">ISCN Browser</NuxtLink></div>
-  </header>
+  <div>
+    <header>
+      <div><NuxtLink class="gradient-text" to="/">ISCN Browser</NuxtLink></div>
+    </header>
+  </div>
 </template>
 
 <style>
@@ -12,14 +14,15 @@ header {
   z-index: -1;
   background-color: #28646e;
   width: 100%;
-  height: 200px;
+  height: 100px;
+  align-items: center;
 }
 .gradient-text {
   display: flex;
   flex-wrap: nowrap;
   max-width: max-content;
 
-  margin: 55px 20px;
+  margin-left: 10px;
   font-size: 64px;
   color: transparent;
   line-height: 1.35;

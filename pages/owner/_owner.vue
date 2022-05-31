@@ -1,11 +1,5 @@
 <template>
-  <div>
-    <MainHeader />
-    <div>
-      <TagList />
-      <ISCNList :url="url" />
-    </div>
-  </div>
+  <ISCNList :url="url" />
 </template>
 
 <script>

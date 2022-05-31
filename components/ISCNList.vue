@@ -95,6 +95,49 @@ export default {
 div.main {
   align-items: center;
 }
+#block-list {
+  margin-top: 60px;
+  display: grid;
+  row-gap: 48px;
+  column-gap: 24px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.block-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-evenly;
+
+  text-decoration: none;
+  color: black;
+
+  min-height: 280px;
+  border: 2px solid black;
+  padding: 12px;
+  border-radius: 24px;
+}
+
+.tags {
+  margin-top: 20px;
+}
+/* text style */
+
+.time-stamp {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: darkgrey;
+}
+
+.strong {
+  margin: 0;
+  margin-top: 16px;
+  font-size: 18px;
+  font-weight: 600;
+  color: darkgrey;
+}
+
 ul.pagination {
   display: inline-block;
   padding: 0;
