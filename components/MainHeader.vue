@@ -3,6 +3,11 @@
     <header>
       <div><NuxtLink class="gradient-text" to="/">ISCN Browser</NuxtLink></div>
     </header>
+    <div>
+      <form action="/search">
+        <label>Search: <input type="text" name="q" /></label>
+      </form>
+    </div>
   </div>
 </template>
 

@@ -1,6 +1,6 @@
 <template>
   <p v-if="$fetchState.pending">Loading...</p>
-  <p v-else-if="$fetchState.error">An error occurs...</p>
+  <p v-else-if="$fetchState.error">Not found</p>
   <div v-else class="main">
     <Paginate
       :page-count="pageCount"
