@@ -65,7 +65,7 @@
       <h3>Stakeholders:</h3>
       <ul
         v-if="
-          record.stakeholders !== undefined && record.stakeholders.length != 1
+          record.stakeholders !== undefined && record.stakeholders.length != 0
         "
         data-bind="stakeholders"
         data-attr="list"
