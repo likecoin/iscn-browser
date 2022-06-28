@@ -8,7 +8,7 @@ export default {
   data() {
     const q = this.$route.query.q
     return {
-      url: `/iscn/records/search?q=${q}`,
+      url: `/iscn/records?q=${q}`,
     }
   },
 }

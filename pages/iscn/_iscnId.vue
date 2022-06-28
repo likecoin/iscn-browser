@@ -31,7 +31,7 @@
       </NuxtLink>
     </p>
 
-    <div v-if="record.keywords.length != 0">
+    <div v-if="record.keywords && record.keywords.length != 0">
       <h3>Keywords:</h3>
       <ul>
         <li v-for="keyword in record.keywords" :key="keyword">
@@ -46,7 +46,7 @@
     <div class="fingerprint">
       <p>Content Fingerprints:</p>
       <ul
-        v-if="record.contentFingerprints.length != 1"
+        v-if="record.contentFingerprints && record.contentFingerprints.length != 1"
         data-bind="contentFingerprints"
         data-attr="list"
       >
