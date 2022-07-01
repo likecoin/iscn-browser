@@ -1,5 +1,8 @@
 <template>
-  <ISCNList :url="url" />
+  <div>
+    <h3>Fingerprint: {{ fingerprint }}</h3>
+    <ISCNList :url="url" />
+  </div>
 </template>
 
 <script>
@@ -8,6 +11,7 @@ export default {
   data() {
     const fingerprint = this.$route.params.fingerprint
     return {
+      fingerprint,
       url: `/iscn/records?fingerprint=${fingerprint}`,
     }
   },

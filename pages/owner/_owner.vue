@@ -1,5 +1,8 @@
 <template>
-  <ISCNList :url="url" />
+  <div>
+    <h3>Owner: {{ owner }}</h3>
+    <ISCNList :url="url" />
+  </div>
 </template>
 
 <script>
@@ -8,6 +11,7 @@ export default {
   data() {
     const owner = this.$route.params.owner
     return {
+      owner,
       url: `/iscn/records?owner=${owner}`,
     }
   },

@@ -2,55 +2,82 @@
   <p v-if="$fetchState.pending">Loading...</p>
   <p v-else-if="$fetchState.error">Not found</p>
   <div v-else class="main">
-    <Paginate
-      :page-count="pageCount"
-      :container-class="'pagination'"
-      :page-class="'page-item'"
-      :click-handler="(pageNum) => (page = pageNum)"
-      v-model="page"
-    ></Paginate>
-    <div id="block-list">
-      <NuxtLink
-        v-for="record in records.slice((page - 1) * limit, page * limit)"
+    <table>
+      <tr>
+        <th>Timestamp</th>
+        <th>Name</th>
+        <th>Keywords</th>
+        <th>Stakeholders</th>
+        <th>Owner</th>
+        <th>URL</th>
+        <th>Fingerprints</th>
+      </tr>
+      <tr v-for="record in records"
         :key="record.iscn"
-        :to="`/iscn/${record.iscn}`"
-        class="block-item"
       >
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M7.5 1.44338C7.8094 1.26474 8.1906 1.26474 8.5 1.44338L13.4282 4.28868C13.7376 4.46731 13.9282 4.79744 13.9282 5.1547V10.8453C13.9282 11.2026 13.7376 11.5327 13.4282 11.7113L8.5 14.5566C8.1906 14.7353 7.8094 14.7353 7.5 14.5566L2.5718 11.7113C2.2624 11.5327 2.0718 11.2026 2.0718 10.8453V5.1547C2.0718 4.79743 2.2624 4.46731 2.5718 4.28868L7.5 1.44338Z"
-            stroke="#50E3C2"
-            stroke-width="2"
-          />
-        </svg>
-        <h2>
-          {{ record.name }}
-        </h2>
-        <div>
-          <div class="time-stamp strong">Publish date</div>
-          <p class="time-stamp">{{ record.timestamp }}</p>
-        </div>
-      </NuxtLink>
-    </div>
-    <Paginate
-      :page-count="pageCount"
-      :container-class="'pagination'"
-      :page-class="'page-item'"
-      :click-handler="(pageNum) => (page = pageNum)"
-      v-model="page"
-    ></Paginate>
+        <td>{{ record.timestamp }}</td>
+        <td>{{ record.contentMetadata.name }}</td>
+        <td>
+          <NuxtLink v-for="keyword in record.contentMetadata.keywords"
+            :key="keyword" :to="`/keyword/${keyword}`">
+            {{ keyword }}
+          </NuxtLink>
+        </td>
+        <td>
+        <a v-for="holder in record.stakeholders" :key="holder.entity.name">
+          <NuxtLink
+            :to="`/stakeholder/${encodeURIComponent(holder.entity.name)}`"
+          >
+            {{ holder.entity.name }}
+          </NuxtLink>
+        </a>
+        </td>
+        <td><NuxtLink :to="`/owner/${record.owner}`">{{ record.owner }}</NuxtLink></td>
+        <td><a
+            v-if="record.contentMetadata.url"
+            :href="record.contentMetadata.url"
+            target="_blank">
+            {{ domain_from_url(record.contentMetadata.url) }}
+        </a></td>
+        <td v-if="record.contentFingerprints">
+          <a
+            v-for="[schema, link] in record.contentFingerprints.map(fingerprintLink)"
+            :key="schema"
+            :href="link"
+            target="blank"
+          >
+              {{ schema }}
+          </a>
+        </td>
+        <td v-else>
+        </td>
+        <td>
+          <a
+            target="_blank"
+            :href="`https://app.like.co/view/${encodeURIComponent(record.iscn)}`"
+          >Detail
+          </a>
+          <a
+            target="_blank"
+            :href="`https://mainnet-node.like.co/iscn/records/id?iscn_id=${record.iscn}`">
+            Raw Data
+          </a>
+        </td>
+      </tr>
+    </table>
     <p>There are {{ records.length }} results in total.</p>
   </div>
 </template>
 
 <script>
 import Paginate from 'vuejs-paginate'
+function isDepub(record) {
+  try {
+    return record.contentFingerprints.includes("https://depub.blog")
+  } catch (err) {
+      return false
+    }
+}
 export default {
   props: {
     url: String,
@@ -61,6 +88,28 @@ export default {
   methods: {
     changePage: (pageNum) => {
       this.page = pageNum
+    },
+    domain_from_url: (url) => {
+      try {
+        let domain = new URL(url);
+        console.log(domain);
+        return domain.hostname.replace("www.", "")
+      } catch {
+        return ""
+      }
+    },
+    fingerprintLink(fingerprint) {
+      const [schema, value] = fingerprint.split('://')
+      switch (schema) {
+        case 'ipfs':
+          return [schema, `https://infura-ipfs.io/ipfs/${value}`]
+
+          case 'ar':
+          return [schema, `https://arweave.net/${value}`]
+
+          default:
+          return [schema, `/fingerprint/${encodeURIComponent(fingerprint)}`]
+      }
     },
   },
   data() {
@@ -74,17 +123,28 @@ export default {
     }
   },
   async fetch() {
-    const limit = 60
+    const limit = 100
     const url = `${this.$props.url}&limit=${limit}`
     console.log(url)
     const res = await this.$axios.$get(url)
     this.records = res.records.map((record) => {
+      console.log(record)
       const { data } = record
       const datetime = new Date(data.recordTimestamp)
       const timestamp = datetime.toLocaleString()
-      const iscn = encodeURIComponent(data['@id'])
-      const content = data.contentMetadata
-      return { iscn, timestamp, ...content }
+      const iscn = data["@id"]
+      if (isDepub(data)) {
+        let depubUrl = iscn.replace(/iscn:\/\/[^\/]+\//, '')
+                                    data.contentMetadata.url = `https://depub.space/${depubUrl}`
+      }
+      if (data.contentMetadata.keywords) {
+        data.contentMetadata.keywords = data.contentMetadata.keywords
+          .split(',')
+          .map((k) => k.trim())
+          .filter((k) => k !== '')
+          console.log(data.contentMetadata.keywords)
+      }
+      return { iscn, timestamp, ...data }
     })
     this.pageCount = Math.ceil(this.records.length / this.limit)
   },
@@ -94,6 +154,10 @@ export default {
 <style>
 div.main {
   align-items: center;
+}
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
 }
 #block-list {
   margin-top: 60px;
