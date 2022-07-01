@@ -73,7 +73,7 @@
 import Paginate from 'vuejs-paginate'
 function isDepub(record) {
   try {
-    return record.contentFingerprints.includes("https://depub.blog")
+    return record.contentMetadata.url === "" && record.contentFingerprints.includes("https://depub.blog")
   } catch (err) {
       return false
     }
