@@ -12,7 +12,7 @@ export default {
     const owner = this.$route.params.owner
     return {
       owner,
-      url: `/iscn/records?owner=${owner}`,
+      url: `/iscn/records?owner=${encodeURIComponent(owner)}`,
     }
   },
 }

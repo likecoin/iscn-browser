@@ -12,7 +12,7 @@ export default {
     const keyword = this.$route.params.keyword
     return {
       keyword,
-      url: `/iscn/records?keywords=${keyword}`,
+      url: `/iscn/records?keywords=${encodeURIComponent(keyword)}`,
     }
   },
 }

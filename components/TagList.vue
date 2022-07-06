@@ -18,3 +18,9 @@ export default {
   },
 }
 </script>
+<style>
+.tags {
+  margin-top: 20px;
+}
+/* text style */
+</style>

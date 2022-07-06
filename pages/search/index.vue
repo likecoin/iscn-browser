@@ -12,7 +12,7 @@ export default {
     const q = this.$route.query.q
     return {
       q,
-      url: `/iscn/records?q=${q}`,
+      url: `/iscn/records?q=${encodeURIComponent(q)}`,
     }
   },
 }

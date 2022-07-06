@@ -12,7 +12,7 @@ export default {
     const fingerprint = this.$route.params.fingerprint
     return {
       fingerprint,
-      url: `/iscn/records?fingerprint=${fingerprint}`,
+      url: `/iscn/records?fingerprint=${encodeURIComponent(fingerprint)}`,
     }
   },
 }

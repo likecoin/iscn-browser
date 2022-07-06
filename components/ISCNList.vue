@@ -2,6 +2,7 @@
   <p v-if="$fetchState.pending">Loading...</p>
   <p v-else-if="$fetchState.error">Not found</p>
   <div v-else class="main">
+    <NuxtLink :to="`?before=${last}`">Next</NuxtLink>
     <table>
       <tr>
         <th>Timestamp</th>
@@ -19,7 +20,7 @@
         <td>{{ record.contentMetadata.name }}</td>
         <td>
           <NuxtLink v-for="keyword in record.contentMetadata.keywords"
-            :key="keyword" :to="`/keyword/${keyword}`">
+            :key="keyword" :to="`/keyword/${encodeURIComponent(keyword)}`">
             {{ keyword }}
           </NuxtLink>
         </td>
@@ -32,7 +33,7 @@
           </NuxtLink>
         </a>
         </td>
-        <td><NuxtLink :to="`/owner/${record.owner}`">{{ record.owner }}</NuxtLink></td>
+        <td><NuxtLink :to="`/owner/${encodeURIComponent(record.owner)}`">{{ record.owner }}</NuxtLink></td>
         <td><a
             v-if="record.contentMetadata.url"
             :href="record.contentMetadata.url"
@@ -59,13 +60,14 @@
           </a>
           <a
             target="_blank"
-            :href="`https://mainnet-node.like.co/iscn/records/id?iscn_id=${record.iscn}`">
+            :href="`/iscn/records?iscn_id=${record.iscn}`">
             Raw Data
           </a>
         </td>
       </tr>
     </table>
     <p>There are {{ records.length }} results in total.</p>
+    <NuxtLink :to="`?before=${last}`">Next</NuxtLink>
   </div>
 </template>
 
@@ -73,12 +75,15 @@
 import Paginate from 'vuejs-paginate'
 function isDepub(record) {
   try {
-    return record.contentMetadata.url === "" && record.contentFingerprints.includes("https://depub.blog")
+    return record.contentMetadata.url === undefined && record.contentFingerprints.includes("https://depub.blog")
   } catch (err) {
       return false
     }
 }
 export default {
+  watch: {
+    '$route.query': '$fetch'
+  },
   props: {
     url: String,
   },
@@ -92,7 +97,6 @@ export default {
     domain_from_url: (url) => {
       try {
         let domain = new URL(url);
-        console.log(domain);
         return domain.hostname.replace("www.", "")
       } catch {
         return ""
@@ -120,15 +124,17 @@ export default {
       pageCount: 0,
       next: '',
       previous: '',
+      last: 0,
     }
   },
   async fetch() {
     const limit = 100
-    const url = `${this.$props.url}&limit=${limit}`
+    const before = this.$route.query.before || 0
+    const url = `${this.$props.url}&limit=${limit}&before=${before}&order_by=desc`
     console.log(url)
     const res = await this.$axios.$get(url)
+    this.last = res.last
     this.records = res.records.map((record) => {
-      console.log(record)
       const { data } = record
       const datetime = new Date(data.recordTimestamp)
       const timestamp = datetime.toLocaleString()
@@ -142,7 +148,6 @@ export default {
           .split(',')
           .map((k) => k.trim())
           .filter((k) => k !== '')
-          console.log(data.contentMetadata.keywords)
       }
       return { iscn, timestamp, ...data }
     })
@@ -159,49 +164,6 @@ table, th, td {
   border: 1px solid black;
   border-collapse: collapse;
 }
-#block-list {
-  margin-top: 60px;
-  display: grid;
-  row-gap: 48px;
-  column-gap: 24px;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-
-.block-item {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-evenly;
-
-  text-decoration: none;
-  color: black;
-
-  min-height: 280px;
-  border: 2px solid black;
-  padding: 12px;
-  border-radius: 24px;
-}
-
-.tags {
-  margin-top: 20px;
-}
-/* text style */
-
-.time-stamp {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 500;
-  color: darkgrey;
-}
-
-.strong {
-  margin: 0;
-  margin-top: 16px;
-  font-size: 18px;
-  font-weight: 600;
-  color: darkgrey;
-}
-
 ul.pagination {
   display: inline-block;
   padding: 0;
