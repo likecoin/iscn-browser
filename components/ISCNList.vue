@@ -2,7 +2,8 @@
   <p v-if="$fetchState.pending">Loading...</p>
   <p v-else-if="$fetchState.error">Not found</p>
   <div v-else class="main">
-    <NuxtLink :to="`?before=${last}`">Next</NuxtLink>
+    <NuxtLink :to="`?key=${key}&reverse=${reverse}`">Next</NuxtLink>
+    <NuxtLink :to="`?reverse=${!reverse}`">Reverse</NuxtLink>
     <table>
       <tr>
         <th>Timestamp</th>
@@ -67,7 +68,8 @@
       </tr>
     </table>
     <p>There are {{ records.length }} results in total.</p>
-    <NuxtLink :to="`?before=${last}`">Next</NuxtLink>
+    <NuxtLink :to="`?key=${key}&reverse=${reverse}`">Next</NuxtLink>
+    <NuxtLink :to="`?reverse=${!reverse}`">Reverse</NuxtLink>
   </div>
 </template>
 
@@ -129,11 +131,12 @@ export default {
   },
   async fetch() {
     const limit = 100
-    const before = this.$route.query.before || 0
-    const url = `${this.$props.url}&limit=${limit}&before=${before}&order_by=desc`
+    const key = this.$route.query.key || 0
+    this.reverse = this.$route.query.reverse != 'false'
+    const url = `${this.$props.url}&limit=${limit}&key=${key}&reverse=${this.reverse}`
     console.log(url)
     const res = await this.$axios.$get(url)
-    this.last = res.last
+    this.key = res.pagination.next_key
     this.records = res.records.map((record) => {
       const { data } = record
       const datetime = new Date(data.recordTimestamp)
