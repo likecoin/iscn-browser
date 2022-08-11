@@ -61,7 +61,7 @@
           </a>
           <a
             target="_blank"
-            :href="`/iscn/records?iscn_id=${record.iscn}`">
+            :href="`${INDEXER}/iscn/records?iscn_id=${record.iscn}`">
             Raw Data
           </a>
         </td>
@@ -74,7 +74,8 @@
 </template>
 
 <script>
-import Paginate from 'vuejs-paginate'
+import { IPFS_GATEWAY, ARWEAVE_GATEWAY, INDEXER } from '../config.js';
+
 function isDepub(record) {
   try {
     return record.contentMetadata.url === undefined && record.contentFingerprints.includes("https://depub.blog")
@@ -83,40 +84,8 @@ function isDepub(record) {
     }
 }
 export default {
-  watch: {
-    '$route.query': '$fetch'
-  },
   props: {
     url: String,
-  },
-  components: {
-    Paginate,
-  },
-  methods: {
-    changePage: (pageNum) => {
-      this.page = pageNum
-    },
-    domain_from_url: (url) => {
-      try {
-        let domain = new URL(url);
-        return domain.hostname.replace("www.", "")
-      } catch {
-        return ""
-      }
-    },
-    fingerprintLink(fingerprint) {
-      const [schema, value] = fingerprint.split('://')
-      switch (schema) {
-        case 'ipfs':
-          return [schema, `https://infura-ipfs.io/ipfs/${value}`]
-
-          case 'ar':
-          return [schema, `https://arweave.net/${value}`]
-
-          default:
-          return [schema, `/fingerprint/${encodeURIComponent(fingerprint)}`]
-      }
-    },
   },
   data() {
     return {
@@ -127,12 +96,13 @@ export default {
       next: '',
       previous: '',
       last: 0,
+      INDEXER,
     }
   },
   async fetch() {
     const limit = 100
     const key = this.$route.query.key || 0
-    this.reverse = this.$route.query.reverse != 'false'
+    this.reverse = this.$route.query.reverse !== 'false'
     const url = `${this.$props.url}&limit=${limit}&key=${key}&reverse=${this.reverse}`
     console.log(url)
     const res = await this.$axios.$get(url)
@@ -143,8 +113,9 @@ export default {
       const timestamp = datetime.toLocaleString()
       const iscn = data["@id"]
       if (isDepub(data)) {
-        let depubUrl = iscn.replace(/iscn:\/\/[^\/]+\//, '')
-                                    data.contentMetadata.url = `https://depub.space/${depubUrl}`
+        const re = RegExp('iscn://[^/]+/', 'g') // eslint-disable-line
+        const depubUrl = iscn.replace(re, '')
+        data.contentMetadata.url = `https://depub.space/${depubUrl}`
       }
       if (data.contentMetadata.keywords) {
         data.contentMetadata.keywords = data.contentMetadata.keywords
@@ -155,6 +126,35 @@ export default {
       return { iscn, timestamp, ...data }
     })
     this.pageCount = Math.ceil(this.records.length / this.limit)
+  },
+  watch: {
+    '$route.query': '$fetch'
+  },
+  methods: {
+    changePage: (pageNum) => {
+      this.page = pageNum
+    },
+    domain_from_url: (url) => {
+      try {
+        const domain = new URL(url);
+        return domain.hostname.replace("www.", "")
+      } catch {
+        return ""
+      }
+    },
+    fingerprintLink(fingerprint) {
+      const [schema, value] = fingerprint.split('://')
+      switch (schema) {
+        case 'ipfs':
+          return [schema, `${IPFS_GATEWAY}/ipfs/${value}`]
+
+          case 'ar':
+          return [schema, `${ARWEAVE_GATEWAY}/${value}`]
+
+          default:
+          return [schema, `/fingerprint/${encodeURIComponent(fingerprint)}`]
+      }
+    },
   },
 }
 </script>

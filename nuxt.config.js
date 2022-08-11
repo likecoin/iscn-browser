@@ -1,4 +1,5 @@
 process.env.DEBUG = 'nuxt:*'
+import { INDEXER } from './config.js'
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   target: 'static',
@@ -42,8 +43,8 @@ export default {
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
     // baseURL: 'https://like.wancat.cc',
-    // baseURL: 'https://mainnet-node.like.co',
-    proxy: true,
+    baseURL: INDEXER,
+    // proxy: true,
   },
   proxy: [
     'http://127.0.0.1:8997/iscn/records',
