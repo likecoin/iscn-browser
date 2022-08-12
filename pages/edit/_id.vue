@@ -1,7 +1,7 @@
 <template>
   <p v-if="$fetchState.pending">Loading...</p>
   <p v-else-if="$fetchState.error">An error occurs :(</p>
-  <div v-else id="detail">
+  <div v-else>
     <h1>Edit {{ iscnId }}</h1>
     <p>
       Owner:
@@ -33,7 +33,7 @@
 
     <h2>Stakeholders</h2>
     <div>
-      <div v-for="(holder, i) in stakeholders" :key="i" class="stakehodlers">
+      <div v-for="(holder, i) in stakeholders" :key="i" class="stakeholder">
         <p>
           <label>Id: 
           <input v-model="holder.entity['@id']" type="text" size="50">
@@ -54,27 +54,24 @@
           <input v-model="holder.rewardProportion" type="number">
           </label>
         </p>
+        <button @click="deleteStakeholer(i)">Delete</button>
       </div>
+      <button @click="newStakeholer">New Stakeholder</button>
     </div>
 
     <h2>ContentFingerprints</h2>
-    <div class="fingerprint">
-      <p>Content Fingerprints:</p>
-      <ul
-        v-if="record.contentFingerprints && record.contentFingerprints.length != 1"
-        data-bind="contentFingerprints"
-        data-attr="list"
-      >
-        <li
-          v-for="fingerprint in record.contentFingerprints"
-          :key="fingerprint"
-        >
-          <a :href="fingerprintLink(fingerprint)" target="blank">
-            {{ fingerprint }}
-          </a>
-        </li>
-      </ul>
+    <div>
+      <div v-for="(fingerprint, i) in contentFingerprints" :key="i" class="fingerprint" >
+        <p> <input v-model="contentFingerprints[i]" type="text" size="50"> </p>
+        <button @click="deleteFingerprint(i)">Delete</button>
+      </div>
+      <button @click="newFingerprint">New Fingerprint</button>
     </div>
+
+    <h2>Record Note</h2>
+    <p>
+      <input v-model="recordNote" type="text" size="20">
+    </p>
 
     <h2>Output JSON</h2>
     <pre><code>{{ toJSON() }}</code></pre>
@@ -104,25 +101,38 @@ export default {
   methods: {
     toJSON() {
       const {
-        contentMetadata, contentFingerprints, stakeholders, recordNote
+        contentMetadata, stakeholders, contentFingerprints, recordNote
       } = this;
       return JSON.stringify({
-        contentMetadata, contentFingerprints, stakeholders, recordNote
+        contentMetadata, stakeholders, contentFingerprints, recordNote
       }, null, '\t')
     },
-    fingerprintLink(fingerprint) {
-      const [schema, value] = fingerprint.split('://')
-      switch (schema) {
-        case 'ipfs':
-          return `https://infura-ipfs.io/ipfs/${value}`
-
-        case 'ar':
-          return `https://arweave.net/${value}`
-
-        default:
-          return `/fingerprint/${encodeURIComponent(fingerprint)}`
-      }
+    deleteStakeholer(i) {
+      this.stakeholders = this.stakeholders.filter((_, j) => j !== i);
+    },
+    newStakeholer() {
+      this.stakeholders.push({ entity: {} });
+    },
+    deleteFingerprint(i) {
+      this.contentFingerprints = this.contentFingerprints.filter((_, j) => j !== i);
+    },
+    newFingerprint() {
+      this.contentFingerprints.push("");
     },
   },
 }
 </script>
+
+<style>
+.stakeholder {
+  padding-left: 10px;
+  margin: 5px;
+  border-style: solid;
+}
+
+.fingerprint {
+  padding-left: 10px;
+  margin: 5px;
+  border-style: solid;
+}
+</style>
