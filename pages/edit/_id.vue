@@ -10,26 +10,57 @@
       </NuxtLink>
     </p>
     <h2>ContentMetadata</h2>
-    <h3>Description:</h3>
-    <textarea v-model="contentMetadata.description" cols="150" rows="20"></textarea>
+    <div>
+      <p>
+        <label>name: 
+        <input v-model="contentMetadata.name" type="text" size="50">
+        </label>
+      </p>
 
-    <p>
-      <label>URL: 
-      <input v-model="contentMetadata.url" type="text" size="150">
-      </label>
-    </p>
+      <p>
+        <label>url: 
+        <input v-model="contentMetadata.url" type="text" size="150">
+        </label>
+      </p>
 
-    <p>
-      <label>Type: 
-      <input v-model="contentMetadata['@type']" type="text" size="10">
-      </label>
-    </p>
+      <p>
+        <label>type: 
+        <input v-model="contentMetadata['@type']" type="text" size="10">
+        </label>
+      </p>
 
-    <p>
-      <label>Keywords: 
-      <input v-model="contentMetadata.keywords" type="text" size="100">
-      </label>
-    </p>
+      <p>
+        <label>version: 
+        <input v-model="contentMetadata.version" type="number">
+        </label>
+      </p>
+
+      <p>description:</p>
+      <textarea v-model="contentMetadata.description" cols="150" rows="20"></textarea>
+
+      <p>
+        <label>usage info: 
+        <input v-model="contentMetadata.usageInfo" type="text" size="30">
+        </label>
+      </p>
+
+      <p>
+        <label>keywords: 
+        <input v-model="contentMetadata.keywords" type="text" size="100">
+        </label>
+      </p>
+
+      <p
+        v-for="[key] in Object.entries(contentMetadata).filter(
+          ([k]) => !(defaultFields.includes(k) || excludeFields.includes(k)))" :key="key">
+        <label>{{ key }}: 
+        <input v-model="contentMetadata[key]" type="text" size="100">
+        <button @click="deleteField(key)">Delete</button>
+        </label>
+      </p>
+      <input v-model="newField" type="text">
+      <button @click="addField">Add field</button>
+    </div>
 
     <h2>Stakeholders</h2>
     <div>
@@ -87,7 +118,9 @@ export default {
     stakeholders: {},
     contentFingerprints: {},
     recordNote: "",
-    record: {},
+    defaultFields: ["@type", "description", "url", "name", "keywords", "version", "usageInfo"],
+    excludeFields: ["@context"],
+    newField: "",
   }),
 
   async fetch() {
@@ -118,6 +151,15 @@ export default {
     },
     newFingerprint() {
       this.contentFingerprints.push("");
+    },
+    addField() {
+      this.contentMetadata[this.newField] = "";
+      this.newField = "";
+    },
+    deleteField(key) {
+      console.log(key)
+      delete this.contentMetadata[key]
+      this.$forceUpdate()
     },
   },
 }
