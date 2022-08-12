@@ -14,13 +14,12 @@
         <th>URL</th>
         <th>Fingerprints</th>
       </tr>
-      <tr v-for="record in records"
-        :key="record.iscn"
-      >
+      <tr v-for="record in records" :key="record.iscn" >
         <td>{{ record.timestamp }}</td>
         <td>{{ record.contentMetadata.name }}</td>
         <td>
-          <NuxtLink v-for="keyword in record.contentMetadata.keywords"
+          <NuxtLink
+            v-for="keyword in record.contentMetadata.keywords"
             :key="keyword" :to="`/keyword/${encodeURIComponent(keyword)}`">
             {{ keyword }}
           </NuxtLink>
@@ -56,7 +55,7 @@
         <td>
           <a
             target="_blank"
-            :href="`https://app.like.co/view/${encodeURIComponent(record.iscn)}`"
+            :href="`https://app.like.co/view/${record.iscnEncoded}`"
           >Detail
           </a>
           <a
@@ -64,6 +63,7 @@
             :href="`${INDEXER}/iscn/records?iscn_id=${record.iscn}`">
             Raw Data
           </a>
+          <NuxtLink :to="`/edit/${record.iscnEncoded}`">Edit</NuxtLink>
         </td>
       </tr>
     </table>
@@ -123,7 +123,7 @@ export default {
           .map((k) => k.trim())
           .filter((k) => k !== '')
       }
-      return { iscn, timestamp, ...data }
+      return { iscn, iscnEncoded: encodeURIComponent(iscn), timestamp, ...data }
     })
     this.pageCount = Math.ceil(this.records.length / this.limit)
   },
