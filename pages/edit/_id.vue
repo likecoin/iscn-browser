@@ -32,24 +32,29 @@
     </p>
 
     <h2>Stakeholders</h2>
-    <div class="stakehodlers">
-      <h3>Stakeholders:</h3>
-      <ul
-        v-if="
-          record.stakeholders !== undefined && record.stakeholders.length != 0
-        "
-        data-bind="stakeholders"
-        data-attr="list"
-      >
-        <li v-for="holder in record.stakeholders" :key="holder.entity.name">
-          <NuxtLink
-            :to="`/stakeholder/${encodeURIComponent(holder.entity.name)}`"
-          >
-            {{ holder.entity.name }}
-          </NuxtLink>
-        </li>
-      </ul>
-      <p v-else>None</p>
+    <div>
+      <div v-for="(holder, i) in stakeholders" :key="i" class="stakehodlers">
+        <p>
+          <label>Id: 
+          <input v-model="holder.entity['@id']" type="text" size="50">
+          </label>
+        </p>
+        <p>
+          <label>Name: 
+          <input v-model="holder.entity.name" type="text" size="20">
+          </label>
+        </p>
+        <p>
+          <label>Contribution Type: 
+          <input v-model="holder.contributionType" type="text" size="20">
+          </label>
+        </p>
+        <p>
+          <label>Reward Proportion: 
+          <input v-model="holder.rewardProportion" type="number">
+          </label>
+        </p>
+      </div>
     </div>
 
     <h2>ContentFingerprints</h2>
@@ -71,6 +76,8 @@
       </ul>
     </div>
 
+    <h2>Output JSON</h2>
+    <pre><code>{{ toJSON() }}</code></pre>
   </div>
 </template>
 
@@ -91,14 +98,18 @@ export default {
     const res = await this.$axios.$get(`/iscn/records?iscn_id=${this.iscnId}`)
     const record = res.records[0].data;
     Object.assign(this, record)
-    // this.contentMetadata = record.contentMetadata
-    // this.stakeholders = record.stakeholders
-    // this.contentFingerprints = record.contentFingerprints 
-    // this.recordNote = record.recordNote
     console.log(record);
   },
 
   methods: {
+    toJSON() {
+      const {
+        contentMetadata, contentFingerprints, stakeholders, recordNote
+      } = this;
+      return JSON.stringify({
+        contentMetadata, contentFingerprints, stakeholders, recordNote
+      }, null, '\t')
+    },
     fingerprintLink(fingerprint) {
       const [schema, value] = fingerprint.split('://')
       switch (schema) {
