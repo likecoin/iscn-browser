@@ -4,12 +4,22 @@
       <div><NuxtLink class="gradient-text" to="/">ISCN Browser</NuxtLink></div>
     </header>
     <div>
+      <WalletConnector />
       <form action="/search">
         <label>Search: <input type="text" name="q" /></label>
       </form>
     </div>
   </div>
 </template>
+
+<script>
+import WalletConnector from './Wallet.vue';
+export default {
+  components: {
+    WalletConnector,
+  }
+}
+</script>
 
 <style>
 header {
