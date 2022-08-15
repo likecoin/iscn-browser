@@ -5,6 +5,8 @@ import {
 
 import { LikeCoinWalletConnector, LikeCoinWalletConnectorMethod } from '@likecoin/wallet-connector'
 
+let connector = null
+
 export const state = () => ({
   connector: null,
   offlineSigner: null,
@@ -30,7 +32,7 @@ export const state = () => ({
 
 export const mutations = {
   init (state) {
-    state.connector = new LikeCoinWalletConnector({
+    connector = new LikeCoinWalletConnector({
       chainId: 'likecoin-mainnet-2',
       chainName: 'LikeCoin',
       rpcURL: 'https://mainnet-node.like.co/rpc/',
@@ -51,42 +53,33 @@ export const mutations = {
         LikeCoinWalletConnectorMethod.LikerId,
         LikeCoinWalletConnectorMethod.Cosmostation,
       ],
-      onInit: ({ accounts: [account], offlineSigner }) => {
-        state.offlineSigner = offlineSigner
-        state.walletAddress = account.bech32Address || account.address
-      },
     })
-    const session = state.connector.restoreSession()
+    const session = connector.restoreSession()
     if (session?.accounts) {
       const { accounts: [account] } = session
       state.walletAddress = account.bech32Address || account.address
     }
-    console.log('init', state.connector)
+    console.log('init', connector)
   },
-  async connect (state) {
-    console.log('connect', state.connector)
-    const wallet = await state.connector.openConnectWalletModal()
-    console.log('wallet', wallet)
-    if (!wallet) { return }
-    commit('setWallet', wallet)
+  setWallet (state, wallet) {
     const { accounts: [account], offlineSigner } = wallet
     state.offlineSigner = offlineSigner
     state.walletAddress = account.bech32Address || account.address
   },
   logout (state) {
-    state.connector.disconnect()
+    connector.disconnect()
     state.walletAddress = ''
   },
 }
 
 export const actions = {
-  // async connect ({ state, commit }) {
-  //   console.log('connect', state)
-  //   const wallet = await state.connector.openConnectWalletModal()
-  //   console.log('wallet', wallet)
-  //   if (!wallet) { return }
-  //   commit('setWallet', wallet)
-  // },
+  async connect ({ commit }) {
+    console.log('connect', connector)
+    const wallet = await connector.openConnectWalletModal()
+    console.log('wallet', wallet)
+    if (!wallet) { return }
+    commit('setWallet', wallet)
+  },
   async send (state) {
     await state.connector.initIfNecessary()
     state.error = false
