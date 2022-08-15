@@ -51,11 +51,20 @@
         </label>
       </p>
 
-      <p>
-        <label>keywords:
-          <input v-model="contentMetadata.keywords" type="text" size="100">
-        </label>
-      </p>
+      <p>keywords</p>
+      <div>
+        <div v-for="(keyword, i) in contentMetadata.keywords" :key="i" class="keyword">
+          <p>
+            <input v-model="contentMetadata.keywords[i]" type="text" size="50">
+            <button @click="deleteKeyword(i)">
+              Delete
+            </button>
+          </p>
+        </div>
+        <button @click="newKeyword">
+          New Keyword
+        </button>
+      </div>
 
       <p
         v-for="[key] in Object.entries(contentMetadata).filter(
@@ -123,20 +132,34 @@
       <input v-model="recordNote" type="text" size="20">
     </p>
 
-    <h2>Output JSON</h2>
-    <pre><code>{{ toJSON() }}</code></pre>
-    <button @click="updateISCN">
+    <button :disabled="owner !== walletAddress" @click="updateISCN">
       Update
     </button>
+    <p v-if="isSending">
+      Sending...
+    </p>
+    <p v-else>
+      <a :href="`${INDEXER}/txs/${txHash}`">
+        {{ txHash }}
+      </a>
+    </p>
+    <p v-if="error">
+      {{ error }}
+    </p>
+
+    <h2>Output JSON</h2>
+    <pre><code>{{ toJSON() }}</code></pre>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import { INDEXER } from '@/config'
 
 export default {
   name: 'EditISCN',
   data: () => ({
+    INDEXER,
     iscnId: '',
     owner: '',
     contentMetadata: {},
@@ -150,16 +173,20 @@ export default {
 
   async fetch () {
     this.iscnId = this.$route.params.id
-    const res = await this.$axios.$get(`/iscn/records/id?iscn_id=${this.iscnId}`)
-    this.owner = res.owner
+    const res = await this.$axios.$get(`/iscn/records?iscn_id=${this.iscnId}`)
+    // this.owner = res.owner
     const record = res.records[0].data
     Object.assign(this, record)
-    console.log(record)
+    this.contentMetadata.keywords = record.contentMetadata.keywords.split(',').filter(k => k !== '')
+    console.log(this)
   },
 
   computed: {
     ...mapState('wallet', {
       walletAddress: state => state.walletAddress,
+      txHash: state => state.txHash,
+      isSending: state => state.isSending,
+      error: state => state.error,
     }),
   },
 
@@ -184,24 +211,31 @@ export default {
     newFingerprint () {
       this.contentFingerprints.push('')
     },
+    deleteKeyword (i) {
+      this.contentMetadata.keywords = this.contentMetadata.keywords.filter((_, j) => j !== i)
+    },
+    newKeyword () {
+      this.contentMetadata.keywords.push('')
+    },
     addField () {
       this.contentMetadata[this.newField] = ''
       this.newField = ''
     },
     deleteField (key) {
-      console.log(key)
       delete this.contentMetadata[key]
       this.$forceUpdate()
     },
     updateISCN () {
-      console.log(this.toJSON())
       const {
-        contentMetadata, stakeholders, contentFingerprints, recordNote,
+        stakeholders, contentFingerprints, recordNote,
       } = this
       this.$store.dispatch('wallet/updateISCN', {
         iscnId: this.iscnId,
         payload: {
-          contentMetadata, stakeholders, contentFingerprints, recordNote,
+          stakeholders,
+          contentFingerprints,
+          recordNote,
+          ...this.contentMetadata
         }
       })
     }
