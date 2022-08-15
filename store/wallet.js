@@ -10,7 +10,6 @@ import { WALLET_CONFIG } from '../config'
 let connector = null
 
 export const state = () => ({
-  connector: null,
   offlineSigner: null,
   walletAddress: '',
   isSending: false,
@@ -78,7 +77,7 @@ export const actions = {
     if (session?.accounts) {
       commit('setWallet', session)
     }
-    console.log(state)
+    console.log(state, connector)
   },
 
   async connect ({ commit }) {
@@ -89,7 +88,7 @@ export const actions = {
 
   async updateISCN ({ state, commit }, { iscnId, payload }) {
     console.log(iscnId, payload)
-    await connector.initIfNecessary()
+    commit('setWallet', await connector.initIfNecessary())
     commit('prepareTx')
     const client = new ISCNSigningClient()
     console.log(state.offlineSigner)
