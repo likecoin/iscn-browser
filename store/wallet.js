@@ -15,18 +15,18 @@ export const state = () => ({
   error: '',
 })
 
-export const getters = {
-  formattedWalletAddress (state) {
-    return (
-      state.walletAddress.split('1')[0] + '…' + state.walletAddress.slice(-4)
-    )
-  },
-  txURL (state) {
-    return state.connector
-      ? `${state.connector.restURL}/cosmos/tx/v1beta1/txs/${state.txHash}`
-      : ''
-  },
-}
+// export const getters = {
+//   formattedWalletAddress (state) {
+//     return (
+//       state.walletAddress.split('1')[0] + '…' + state.walletAddress.slice(-4)
+//     )
+//   },
+//   txURL (state) {
+//     return state.connector
+//       ? `${state.connector.restURL}/cosmos/tx/v1beta1/txs/${state.txHash}`
+//       : ''
+//   },
+// }
 
 export const mutations = {
   init (state) {
@@ -61,9 +61,17 @@ export const mutations = {
       const { accounts: [account] } = session
       state.walletAddress = account.bech32Address || account.address
     }
+    console.log('init', state.connector)
   },
-  connect (state) {
-    state.connector.openConnectWalletModal()
+  async connect (state) {
+    console.log('connect', state.connector)
+    const wallet = await state.connector.openConnectWalletModal()
+    console.log('wallet', wallet)
+    if (!wallet) { return }
+    commit('setWallet', wallet)
+    const { accounts: [account], offlineSigner } = wallet
+    state.offlineSigner = offlineSigner
+    state.walletAddress = account.bech32Address || account.address
   },
   logout (state) {
     state.connector.disconnect()
@@ -72,6 +80,13 @@ export const mutations = {
 }
 
 export const actions = {
+  // async connect ({ state, commit }) {
+  //   console.log('connect', state)
+  //   const wallet = await state.connector.openConnectWalletModal()
+  //   console.log('wallet', wallet)
+  //   if (!wallet) { return }
+  //   commit('setWallet', wallet)
+  // },
   async send (state) {
     await state.connector.initIfNecessary()
     state.error = false

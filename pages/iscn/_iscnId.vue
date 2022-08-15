@@ -101,13 +101,13 @@ export default {
       url: 'http://example.com',
       type: 'Article',
       owner: 'like1jcapowiejpoicmapwoeijfp',
-      keywords: ['test', 'example', 'likecoin',]
+      keywords: ['test', 'example', 'likecoin']
     },
   }),
 
   async fetch () {
     const iscnId = this.$route.params.iscnId
-    const res = await this.$axios.$get(`/iscn/records?iscn_id=${iscnId}`,)
+    const res = await this.$axios.$get(`/iscn/records?iscn_id=${iscnId}`)
     const record = res.records[0]
     const {
       owner,
@@ -116,13 +116,13 @@ export default {
       recordTimestamp,
       stakeholders,
     } = record.data
-    const { name, url, description, keywords, } = contentMetadata
+    const { name, url, description, keywords } = contentMetadata
 
     const keywordList = keywords
-      .split(',',)
-      .map(k, => k.trim(),)
-      .filter(k, => k !== '',)
-    console.log(keywordList,)
+      .split(',')
+      .map(k => k.trim())
+      .filter(k => k !== '')
+    console.log(keywordList)
     this.record = {
       name,
       url,
@@ -137,8 +137,8 @@ export default {
     }
   },
   methods: {
-    fingerprintLink (fingerprint,) {
-      const [schema, value,] = fingerprint.split('://',)
+    fingerprintLink (fingerprint) {
+      const [schema, value] = fingerprint.split('://')
       switch (schema) {
         case 'ipfs':
           return `https://infura-ipfs.io/ipfs/${value}`
@@ -147,7 +147,7 @@ export default {
           return `https://arweave.net/${value}`
 
         default:
-          return `/fingerprint/${encodeURIComponent(fingerprint,)}`
+          return `/fingerprint/${encodeURIComponent(fingerprint)}`
       }
     },
   }

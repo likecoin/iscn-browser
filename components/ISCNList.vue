@@ -97,11 +97,11 @@
 </template>
 
 <script>
-import { IPFS_GATEWAY, ARWEAVE_GATEWAY, INDEXER, } from '../config.js'
+import { IPFS_GATEWAY, ARWEAVE_GATEWAY, INDEXER } from '../config.js'
 
-function isDepub (record,) {
+function isDepub (record) {
   try {
-    return record.contentMetadata.url === undefined && record.contentFingerprints.includes('https://depub.blog',)
+    return record.contentMetadata.url === undefined && record.contentFingerprints.includes('https://depub.blog')
   } catch (err) {
     return false
   }
@@ -127,55 +127,55 @@ export default {
     const key = this.$route.query.key || 0
     this.reverse = this.$route.query.reverse !== 'false'
     const url = `${this.$props.url}&limit=${limit}&key=${key}&reverse=${this.reverse}`
-    console.log(url,)
-    const res = await this.$axios.$get(url,)
+    console.log(url)
+    const res = await this.$axios.$get(url)
     this.key = res.pagination.next_key
-    this.records = res.records.map((record,) => {
-      const { data, } = record
-      const datetime = new Date(data.recordTimestamp,)
+    this.records = res.records.map((record) => {
+      const { data } = record
+      const datetime = new Date(data.recordTimestamp)
       const timestamp = datetime.toLocaleString()
       const iscn = data['@id']
-      if (isDepub(data,)) {
+      if (isDepub(data)) {
         const re = RegExp('iscn://[^/]+/', 'g') // eslint-disable-line
-        const depubUrl = iscn.replace(re, '',)
+        const depubUrl = iscn.replace(re, '')
         data.contentMetadata.url = `https://depub.space/${depubUrl}`
       }
       if (data.contentMetadata.keywords) {
         data.contentMetadata.keywords = data.contentMetadata.keywords
-          .split(',',)
-          .map(k, => k.trim(),)
-          .filter(k, => k !== '',)
+          .split(',')
+          .map(k => k.trim())
+          .filter(k => k !== '')
       }
-      return { iscn, iscnEncoded: encodeURIComponent(iscn,), timestamp, ...data, }
-    },)
-    this.pageCount = Math.ceil(this.records.length / this.limit,)
+      return { iscn, iscnEncoded: encodeURIComponent(iscn), timestamp, ...data }
+    })
+    this.pageCount = Math.ceil(this.records.length / this.limit)
   },
   watch: {
     '$route.query': '$fetch',
   },
   methods: {
-    changePage: (pageNum,) => {
+    changePage: (pageNum) => {
       this.page = pageNum
     },
-    domain_from_url: (url,) => {
+    domain_from_url: (url) => {
       try {
-        const domain = new URL(url,)
-        return domain.hostname.replace('www.', '',)
+        const domain = new URL(url)
+        return domain.hostname.replace('www.', '')
       } catch {
         return ''
       }
     },
-    fingerprintLink (fingerprint,) {
-      const [schema, value,] = fingerprint.split('://',)
+    fingerprintLink (fingerprint) {
+      const [schema, value] = fingerprint.split('://')
       switch (schema) {
         case 'ipfs':
-          return [schema, `${IPFS_GATEWAY}/ipfs/${value}`,]
+          return [schema, `${IPFS_GATEWAY}/ipfs/${value}`]
 
         case 'ar':
-          return [schema, `${ARWEAVE_GATEWAY}/${value}`,]
+          return [schema, `${ARWEAVE_GATEWAY}/${value}`]
 
         default:
-          return [schema, `/fingerprint/${encodeURIComponent(fingerprint,)}`]
+          return [schema, `/fingerprint/${encodeURIComponent(fingerprint)}`]
       }
     },
   }
