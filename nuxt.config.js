@@ -1,5 +1,5 @@
-process.env.DEBUG = 'nuxt:*'
 import { INDEXER } from './config.js'
+process.env.DEBUG = 'nuxt:*'
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   target: 'static',
@@ -12,7 +12,7 @@ export default {
       { hid: 'description', name: 'description', content: '' },
       { name: 'format-detection', content: 'telephone=no' },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css

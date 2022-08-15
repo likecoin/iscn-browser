@@ -8,7 +8,7 @@
 <script>
 export default {
   name: 'OwnerList',
-  data() {
+  data () {
     const owner = this.$route.params.owner
     return {
       owner,

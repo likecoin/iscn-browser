@@ -1,11 +1,15 @@
 <template>
   <!-- <div id="detail">loading...</div> -->
-  <p v-if="$fetchState.pending">Loading...</p>
-  <p v-else-if="$fetchState.error">An error occurs :(</p>
+  <p v-if="$fetchState.pending">
+    Loading...
+  </p>
+  <p v-else-if="$fetchState.error">
+    An error occurs :(
+  </p>
   <div v-else id="detail">
     <h1>{{ record.name }}</h1>
-    <p data-bind="recordTimestamp"></p>
-    <p data-bind="description|descrption"></p>
+    <p data-bind="recordTimestamp" />
+    <p data-bind="description|descrption" />
     <p>
       ISCN: {{ record.iscn }}
       <a
@@ -41,7 +45,9 @@
         </li>
       </ul>
     </div>
-    <p v-else>Keywords: There is no keywords</p>
+    <p v-else>
+      Keywords: There is no keywords
+    </p>
 
     <div class="fingerprint">
       <p>Content Fingerprints:</p>
@@ -78,7 +84,9 @@
           </NuxtLink>
         </li>
       </ul>
-      <p v-else>None</p>
+      <p v-else>
+        None
+      </p>
     </div>
   </div>
 </template>
@@ -93,28 +101,13 @@ export default {
       url: 'http://example.com',
       type: 'Article',
       owner: 'like1jcapowiejpoicmapwoeijfp',
-      keywords: ['test', 'example', 'likecoin'],
+      keywords: ['test', 'example', 'likecoin',]
     },
   }),
-  methods: {
-    fingerprintLink(fingerprint) {
-      const [schema, value] = fingerprint.split('://')
-      switch (schema) {
-        case 'ipfs':
-          return `https://infura-ipfs.io/ipfs/${value}`
 
-        case 'ar':
-          return `https://arweave.net/${value}`
-
-        default:
-          return `/fingerprint/${encodeURIComponent(fingerprint)}`
-      }
-    },
-  },
-
-  async fetch() {
+  async fetch () {
     const iscnId = this.$route.params.iscnId
-    const res = await this.$axios.$get(`/iscn/records?iscn_id=${iscnId}`)
+    const res = await this.$axios.$get(`/iscn/records?iscn_id=${iscnId}`,)
     const record = res.records[0]
     const {
       owner,
@@ -123,13 +116,13 @@ export default {
       recordTimestamp,
       stakeholders,
     } = record.data
-    const { name, url, description, keywords } = contentMetadata
+    const { name, url, description, keywords, } = contentMetadata
 
     const keywordList = keywords
-      .split(',')
-      .map((k) => k.trim())
-      .filter((k) => k !== '')
-    console.log(keywordList)
+      .split(',',)
+      .map(k, => k.trim(),)
+      .filter(k, => k !== '',)
+    console.log(keywordList,)
     this.record = {
       name,
       url,
@@ -143,5 +136,20 @@ export default {
       stakeholders,
     }
   },
+  methods: {
+    fingerprintLink (fingerprint,) {
+      const [schema, value,] = fingerprint.split('://',)
+      switch (schema) {
+        case 'ipfs':
+          return `https://infura-ipfs.io/ipfs/${value}`
+
+        case 'ar':
+          return `https://arweave.net/${value}`
+
+        default:
+          return `/fingerprint/${encodeURIComponent(fingerprint,)}`
+      }
+    },
+  }
 }
 </script>

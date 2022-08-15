@@ -8,7 +8,7 @@
 <script>
 export default {
   name: 'KeywordList',
-  data() {
+  data () {
     const keyword = this.$route.params.keyword
     return {
       keyword,

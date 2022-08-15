@@ -8,7 +8,7 @@
 <script>
 export default {
   name: 'IndexPage',
-  data() {
+  data () {
     return {
       url: '/iscn/records?',
     }
