@@ -7,6 +7,9 @@
   </p>
   <div v-else>
     <h1>Edit {{ iscnId }}</h1>
+    <p v-if="owner !== walletAddress">
+      <strong>Alarm: You are not the owner of this record</strong>
+    </p>
     <p>
       Owner:
       <NuxtLink :to="`/owner/${encodeURIComponent(owner)}`">
@@ -122,14 +125,20 @@
 
     <h2>Output JSON</h2>
     <pre><code>{{ toJSON() }}</code></pre>
+    <button @click="updateISCN">
+      Update
+    </button>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'EditISCN',
   data: () => ({
     iscnId: '',
+    owner: '',
     contentMetadata: {},
     stakeholders: {},
     contentFingerprints: {},
@@ -141,10 +150,17 @@ export default {
 
   async fetch () {
     this.iscnId = this.$route.params.id
-    const res = await this.$axios.$get(`/iscn/records?iscn_id=${this.iscnId}`)
+    const res = await this.$axios.$get(`/iscn/records/id?iscn_id=${this.iscnId}`)
+    this.owner = res.owner
     const record = res.records[0].data
     Object.assign(this, record)
     console.log(record)
+  },
+
+  computed: {
+    ...mapState('wallet', {
+      walletAddress: state => state.walletAddress,
+    }),
   },
 
   methods: {
@@ -177,6 +193,18 @@ export default {
       delete this.contentMetadata[key]
       this.$forceUpdate()
     },
+    updateISCN () {
+      console.log(this.toJSON())
+      const {
+        contentMetadata, stakeholders, contentFingerprints, recordNote,
+      } = this
+      this.$store.dispatch('wallet/updateISCN', {
+        iscnId: this.iscnId,
+        payload: {
+          contentMetadata, stakeholders, contentFingerprints, recordNote,
+        }
+      })
+    }
   },
 }
 </script>

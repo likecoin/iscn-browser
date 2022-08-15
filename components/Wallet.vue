@@ -29,8 +29,10 @@ export default {
     connectWallet () {
       this.$store.dispatch('wallet/connect')
     },
+    init () {
+      this.$store.dispatch('wallet/init')
+    },
     ...mapMutations({
-      init: 'wallet/init',
       logout: 'wallet/logout',
     })
   },
