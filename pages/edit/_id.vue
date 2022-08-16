@@ -60,7 +60,7 @@
         </p>
 
         <p>description:</p>
-        <textarea v-model="contentMetadata.description" :cols="WIDTH" :rows="descriptionLines" />
+        <textarea v-model="contentMetadata.description" :cols="WIDTH" @input="autoResize" />
 
         <p>
           <label>usage info:
@@ -218,9 +218,6 @@ export default {
     lines () {
       return this.rawJSON.split('\n').length
     },
-    descriptionLines () {
-      return Math.ceil(this.contentMetadata.description.length / WIDTH)
-    },
   },
 
   methods: {
@@ -237,6 +234,10 @@ export default {
         contentFingerprints,
         recordNotes,
       }, null, '\t')
+    },
+    autoResize (event) {
+      event.target.style.height = 'auto'
+      event.target.style.height = `${event.target.scrollHeight}px`
     },
     deleteStakeholer (i) {
       this.stakeholders = this.stakeholders.filter((_, j) => j !== i)
@@ -292,14 +293,16 @@ export default {
         this.stakeholders = stakeholders
         this.recordNotes = recordNotes
         this.parseError = ''
+        return true
       } catch (err) {
         this.parseError = err
+        return false
       }
     },
 
     toggleMode () {
       if (this.jsonMode) {
-        this.save()
+        if (!this.save()) { return }
       } else {
         this.rawJSON = this.toJSON()
       }
