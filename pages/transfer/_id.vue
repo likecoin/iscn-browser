@@ -16,9 +16,9 @@
     <p>Owner: {{ owner }}</p>
     <p>{{ contentMetadata.name }}</p>
     <label>Transfer to:
-      <input v-model="receiver" type="text">
+      <input v-model="receiver" type="text" size="40">
     </label>
-    <button disabled="owner !== walletAddress" @click="transfer">
+    <button :disabled="owner !== walletAddress" @click="transfer">
       Transfer
     </button>
     <p v-if="owner !== walletAddress">
