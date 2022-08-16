@@ -127,14 +127,17 @@
       </button>
     </div>
 
-    <h2>Record Note</h2>
+    <h2>Record Notes</h2>
     <p>
-      <input v-model="recordNote" type="text" size="20">
+      <input v-model="recordNotes" type="text" size="20">
     </p>
 
     <button :disabled="owner !== walletAddress" @click="updateISCN">
       Update
     </button>
+    <p v-if="owner !== walletAddress">
+      <strong>Alarm: You are not the owner of this record</strong>
+    </p>
     <p v-if="isSending">
       Sending...
     </p>
@@ -165,7 +168,7 @@ export default {
     contentMetadata: {},
     stakeholders: {},
     contentFingerprints: {},
-    recordNote: '',
+    recordNotes: '',
     defaultFields: ['@type', 'description', 'url', 'name', 'keywords', 'version', 'usageInfo'],
     excludeFields: ['@context'],
     newField: '',
@@ -193,10 +196,16 @@ export default {
   methods: {
     toJSON () {
       const {
-        contentMetadata, stakeholders, contentFingerprints, recordNote,
+        contentMetadata, stakeholders, contentFingerprints, recordNotes,
       } = this
       return JSON.stringify({
-        contentMetadata, stakeholders, contentFingerprints, recordNote,
+        contentMetadata: {
+          ...contentMetadata,
+          keywords: contentMetadata.keywords.join(','),
+        },
+        stakeholders,
+        contentFingerprints,
+        recordNotes,
       }, null, '\t')
     },
     deleteStakeholer (i) {
@@ -227,14 +236,14 @@ export default {
     },
     updateISCN () {
       const {
-        stakeholders, contentFingerprints, recordNote,
+        stakeholders, contentFingerprints, recordNotes,
       } = this
       this.$store.dispatch('wallet/updateISCN', {
         iscnId: this.iscnId,
         payload: {
           stakeholders,
           contentFingerprints,
-          recordNote,
+          recordNotes,
           ...this.contentMetadata
         }
       })
