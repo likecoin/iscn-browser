@@ -83,6 +83,9 @@
           <NuxtLink :to="`/edit/${record.iscnEncoded}`">
             Edit
           </NuxtLink>
+          <NuxtLink :to="`/transfer/${record.iscnEncoded}`">
+            Transfer
+          </NuxtLink>
         </td>
       </tr>
     </table>

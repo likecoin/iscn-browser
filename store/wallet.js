@@ -88,7 +88,6 @@ export const actions = {
     if (!connector) {
       dispatch('init')
     }
-    console.log(iscnId, payload)
     commit('setWallet', await connector.initIfNecessary())
     commit('prepareTx')
     const client = new ISCNSigningClient()
@@ -104,7 +103,32 @@ export const actions = {
         payload,
       )
       commit('doneTx', result)
-      console.log(result)
+    } catch (err) {
+      commit('setError', err)
+      console.error(err)
+    }
+  },
+
+  async transfer ({ state, commit, dispatch }, { iscnId, receiver }) {
+    if (!connector) {
+      dispatch('init')
+    }
+
+    commit('setWallet', await connector.initIfNecessary())
+    commit('prepareTx')
+    const client = new ISCNSigningClient()
+    await client.connectWithSigner(
+      connector.rpcURL,
+      state.offlineSigner,
+    )
+
+    try {
+      const result = await client.changeISCNOwnership(
+        state.walletAddress,
+        receiver,
+        iscnId,
+      )
+      commit('doneTx', result)
     } catch (err) {
       commit('setError', err)
       console.error(err)
