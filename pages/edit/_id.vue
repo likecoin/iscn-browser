@@ -14,6 +14,7 @@
         JSON Mode
       </h2>
       <textarea v-model="rawJSON" cols="150" :rows="lines" />
+      <br>
       <p v-if="parseError">
         {{ parseError }}
       </p>
@@ -266,6 +267,9 @@ export default {
       this.$forceUpdate()
     },
     updateISCN () {
+      if (this.jsonMode) {
+        if (!this.save()) { return }
+      }
       const {
         stakeholders, contentFingerprints, recordNotes,
       } = this
