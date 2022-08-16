@@ -79,14 +79,20 @@
             target="_blank"
             :href="`${INDEXER}/iscn/records?iscn_id=${record.iscn}`"
           >
-            Raw Data
+            RawData
           </a>
           <br>
-          <NuxtLink :to="`/edit/${record.iscnEncoded}`">
+          <NuxtLink
+            v-if="walletAddress === record.owner"
+            :to="`/edit/${record.iscnEncoded}`"
+          >
             Edit
           </NuxtLink>
           <br>
-          <NuxtLink :to="`/transfer/${record.iscnEncoded}`">
+          <NuxtLink
+            v-if="walletAddress === record.owner"
+            :to="`/transfer/${record.iscnEncoded}`"
+          >
             Transfer
           </NuxtLink>
         </td>
@@ -103,6 +109,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import { IPFS_GATEWAY, ARWEAVE_GATEWAY, INDEXER } from '../config.js'
 
 function isDepub (record) {
@@ -155,6 +162,11 @@ export default {
       return { iscn, iscnEncoded: encodeURIComponent(iscn), timestamp, ...data }
     })
     this.pageCount = Math.ceil(this.records.length / this.limit)
+  },
+  computed: {
+    ...mapState('wallet', {
+      walletAddress: state => state.walletAddress,
+    }),
   },
   watch: {
     '$route.query': '$fetch',

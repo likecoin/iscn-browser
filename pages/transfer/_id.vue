@@ -5,25 +5,22 @@
   <p v-else-if="$fetchState.error">
     An error occurs :(
   </p>
+  <p v-else-if="!walletAddress">
+    <strong>Connect wallet to continue</strong>
+  </p>
+  <p v-else-if="walletAddress !== owner">
+    <strong>You are not the owner of this ISCN</strong>
+  </p>
   <div v-else>
-    <p v-if="!walletAddress">
-      <strong>Connect wallet to continue</strong>
-    </p>
-    <p v-else-if="walletAddress !== owner">
-      <strong>Warning: You are not the owner of this ISCN</strong>
-    </p>
     <p>{{ iscnId }}</p>
     <p>Owner: {{ owner }}</p>
     <p>{{ contentMetadata.name }}</p>
     <label>Transfer to:
       <input v-model="receiver" type="text" size="40">
     </label>
-    <button :disabled="owner !== walletAddress" @click="transfer">
+    <button @click="transfer">
       Transfer
     </button>
-    <p v-if="owner !== walletAddress">
-      <strong>Warning: You are not the owner of this ISCN</strong>
-    </p>
     <p v-if="isSending">
       Sending...
     </p>
