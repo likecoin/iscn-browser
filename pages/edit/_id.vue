@@ -6,131 +6,149 @@
     An error occurs :(
   </p>
   <div v-else>
-    <h1>Edit {{ iscnId }}</h1>
-    <p v-if="owner !== walletAddress">
-      <strong>Warning: You are not the owner of this record</strong>
-    </p>
-    <p>
-      Owner:
-      <NuxtLink :to="`/owner/${encodeURIComponent(owner)}`">
-        {{ owner }}
-      </NuxtLink>
-    </p>
-    <h2>ContentMetadata</h2>
-    <div>
-      <p>
-        <label>name:
-          <input v-model="contentMetadata.name" type="text" size="50">
-        </label>
+    <button @click="toggleMode">
+      Change to {{ jsonMode ? "Field Mode" : "JSON Mode" }}
+    </button>
+    <div v-if="jsonMode">
+      <h2>
+        JSON Mode
+      </h2>
+      <textarea v-model="rawJSON" cols="150" :rows="lines" />
+      <p v-if="parseError">
+        {{ parseError }}
       </p>
-
-      <p>
-        <label>url:
-          <input v-model="contentMetadata.url" type="text" size="150">
-        </label>
+      <button @click="save">
+        Save
+      </button>
+      </h2>
+    </div>
+    <div v-else>
+      <h1>Edit {{ iscnId }}</h1>
+      <p v-if="owner !== walletAddress">
+        <strong>Warning: You are not the owner of this record</strong>
       </p>
-
       <p>
-        <label>type:
-          <input v-model="contentMetadata['@type']" type="text" size="10">
-        </label>
+        Owner:
+        <NuxtLink :to="`/owner/${encodeURIComponent(owner)}`">
+          {{ owner }}
+        </NuxtLink>
       </p>
-
-      <p>
-        <label>version:
-          <input v-model="contentMetadata.version" type="number">
-        </label>
-      </p>
-
-      <p>description:</p>
-      <textarea v-model="contentMetadata.description" cols="150" rows="20" />
-
-      <p>
-        <label>usage info:
-          <input v-model="contentMetadata.usageInfo" type="text" size="30">
-        </label>
-      </p>
-
-      <p>keywords</p>
+      <h2>ContentMetadata</h2>
       <div>
-        <div v-for="(keyword, i) in contentMetadata.keywords" :key="i" class="keyword">
-          <p>
-            <input v-model="contentMetadata.keywords[i]" type="text" size="50">
-            <button @click="deleteKeyword(i)">
-              Delete
-            </button>
-          </p>
+        <p>
+          <label>name:
+            <input v-model="contentMetadata.name" type="text" size="50">
+          </label>
+        </p>
+
+        <p>
+          <label>url:
+            <input v-model="contentMetadata.url" type="text" size="150">
+          </label>
+        </p>
+
+        <p>
+          <label>type:
+            <input v-model="contentMetadata['@type']" type="text" size="10">
+          </label>
+        </p>
+
+        <p>
+          <label>version:
+            <input v-model="contentMetadata.version" type="number">
+          </label>
+        </p>
+
+        <p>description:</p>
+        <textarea v-model="contentMetadata.description" :cols="WIDTH" :rows="descriptionLines" />
+
+        <p>
+          <label>usage info:
+            <input v-model="contentMetadata.usageInfo" type="text" size="30">
+          </label>
+        </p>
+
+        <p>keywords</p>
+        <div>
+          <div v-for="(keyword, i) in contentMetadata.keywords" :key="i" class="keyword">
+            <p>
+              <input v-model="contentMetadata.keywords[i]" type="text" size="50">
+              <button @click="deleteKeyword(i)">
+                Delete
+              </button>
+            </p>
+          </div>
+          <button @click="newKeyword">
+            New Keyword
+          </button>
         </div>
-        <button @click="newKeyword">
-          New Keyword
+
+        <p
+          v-for="[key] in Object.entries(contentMetadata).filter(
+            ([k]) => !(defaultFields.includes(k) || excludeFields.includes(k)))"
+          :key="key"
+        >
+          <label>{{ key }}:
+            <input v-model="contentMetadata[key]" type="text" size="100">
+            <button @click="deleteField(key)">Delete</button>
+          </label>
+        </p>
+        <input v-model="newField" type="text">
+        <button @click="addField">
+          Add field
         </button>
       </div>
 
-      <p
-        v-for="[key] in Object.entries(contentMetadata).filter(
-          ([k]) => !(defaultFields.includes(k) || excludeFields.includes(k)))"
-        :key="key"
-      >
-        <label>{{ key }}:
-          <input v-model="contentMetadata[key]" type="text" size="100">
-          <button @click="deleteField(key)">Delete</button>
-        </label>
+      <h2>Stakeholders</h2>
+      <div>
+        <div v-for="(holder, i) in stakeholders" :key="i" class="stakeholder">
+          <p>
+            <label>Id:
+              <input v-model="holder.entity['@id']" type="text" size="50">
+            </label>
+          </p>
+          <p>
+            <label>Name:
+              <input v-model="holder.entity.name" type="text" size="20">
+            </label>
+          </p>
+          <p>
+            <label>Contribution Type:
+              <input v-model="holder.contributionType" type="text" size="20">
+            </label>
+          </p>
+          <p>
+            <label>Reward Proportion:
+              <input v-model="holder.rewardProportion" type="number">
+            </label>
+          </p>
+          <button @click="deleteStakeholer(i)">
+            Delete
+          </button>
+        </div>
+        <button @click="newStakeholer">
+          New Stakeholder
+        </button>
+      </div>
+
+      <h2>ContentFingerprints</h2>
+      <div>
+        <div v-for="(fingerprint, i) in contentFingerprints" :key="i" class="fingerprint">
+          <p> <input v-model="contentFingerprints[i]" type="text" size="50"> </p>
+          <button @click="deleteFingerprint(i)">
+            Delete
+          </button>
+        </div>
+        <button @click="newFingerprint">
+          New Fingerprint
+        </button>
+      </div>
+
+      <h2>Record Notes</h2>
+      <p>
+        <input v-model="recordNotes" type="text" size="20">
       </p>
-      <input v-model="newField" type="text">
-      <button @click="addField">
-        Add field
-      </button>
     </div>
-
-    <h2>Stakeholders</h2>
-    <div>
-      <div v-for="(holder, i) in stakeholders" :key="i" class="stakeholder">
-        <p>
-          <label>Id:
-            <input v-model="holder.entity['@id']" type="text" size="50">
-          </label>
-        </p>
-        <p>
-          <label>Name:
-            <input v-model="holder.entity.name" type="text" size="20">
-          </label>
-        </p>
-        <p>
-          <label>Contribution Type:
-            <input v-model="holder.contributionType" type="text" size="20">
-          </label>
-        </p>
-        <p>
-          <label>Reward Proportion:
-            <input v-model="holder.rewardProportion" type="number">
-          </label>
-        </p>
-        <button @click="deleteStakeholer(i)">
-          Delete
-        </button>
-      </div>
-      <button @click="newStakeholer">
-        New Stakeholder
-      </button>
-    </div>
-
-    <h2>ContentFingerprints</h2>
-    <div>
-      <div v-for="(fingerprint, i) in contentFingerprints" :key="i" class="fingerprint">
-        <p> <input v-model="contentFingerprints[i]" type="text" size="50"> </p>
-        <button @click="deleteFingerprint(i)">
-          Delete
-        </button>
-      </div>
-      <button @click="newFingerprint">
-        New Fingerprint
-      </button>
-    </div>
-
-    <h2>Record Notes</h2>
-    <p>
-      <input v-model="recordNotes" type="text" size="20">
-    </p>
 
     <button :disabled="owner !== walletAddress" @click="updateISCN">
       Update
@@ -159,6 +177,8 @@
 import { mapState } from 'vuex'
 import { INDEXER } from '@/config'
 
+const WIDTH = 150
+
 export default {
   name: 'EditISCN',
   data: () => ({
@@ -172,6 +192,10 @@ export default {
     defaultFields: ['@type', 'description', 'url', 'name', 'keywords', 'version', 'usageInfo'],
     excludeFields: ['@context'],
     newField: '',
+    jsonMode: false,
+    rawJSON: '',
+    parseError: '',
+    WIDTH,
   }),
 
   async fetch () {
@@ -191,6 +215,12 @@ export default {
       isSending: state => state.isSending,
       error: state => state.error,
     }),
+    lines () {
+      return this.rawJSON.split('\n').length
+    },
+    descriptionLines () {
+      return Math.ceil(this.contentMetadata.description.length / WIDTH)
+    },
   },
 
   methods: {
@@ -247,7 +277,34 @@ export default {
           ...this.contentMetadata
         }
       })
-    }
+    },
+
+    save () {
+      try {
+        const {
+          contentMetadata, stakeholders, contentFingerprints, recordNotes,
+        } = JSON.parse(this.rawJSON)
+        this.contentMetadata = {
+          ...contentMetadata,
+          keywords: contentMetadata.keywords.split(',').filter(k => k !== ''),
+        }
+        this.contentFingerprints = contentFingerprints
+        this.stakeholders = stakeholders
+        this.recordNotes = recordNotes
+        this.parseError = ''
+      } catch (err) {
+        this.parseError = err
+      }
+    },
+
+    toggleMode () {
+      if (this.jsonMode) {
+        this.save()
+      } else {
+        this.rawJSON = this.toJSON()
+      }
+      this.jsonMode = !this.jsonMode
+    },
   },
 }
 </script>
