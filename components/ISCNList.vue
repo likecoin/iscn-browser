@@ -74,15 +74,18 @@
             :href="`https://app.like.co/view/${record.iscnEncoded}`"
           >Detail
           </a>
+          <br>
           <a
             target="_blank"
             :href="`${INDEXER}/iscn/records?iscn_id=${record.iscn}`"
           >
             Raw Data
           </a>
+          <br>
           <NuxtLink :to="`/edit/${record.iscnEncoded}`">
             Edit
           </NuxtLink>
+          <br>
           <NuxtLink :to="`/transfer/${record.iscnEncoded}`">
             Transfer
           </NuxtLink>

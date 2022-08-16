@@ -8,7 +8,7 @@
   <div v-else>
     <h1>Edit {{ iscnId }}</h1>
     <p v-if="owner !== walletAddress">
-      <strong>Alarm: You are not the owner of this record</strong>
+      <strong>Warning: You are not the owner of this record</strong>
     </p>
     <p>
       Owner:
@@ -136,7 +136,7 @@
       Update
     </button>
     <p v-if="owner !== walletAddress">
-      <strong>Alarm: You are not the owner of this record</strong>
+      <strong>Warning: You are not the owner of this record</strong>
     </p>
     <p v-if="isSending">
       Sending...

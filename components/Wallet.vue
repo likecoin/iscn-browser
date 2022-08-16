@@ -1,7 +1,11 @@
 <template>
   <div>
     <div v-if="walletAddress">
-      <p>{{ walletAddress }}</p>
+      <p>
+        <NuxtLink :to="`/owner/${walletAddress}`">
+          {{ walletAddress }}
+        </NuxtLink>
+      </p>
       <p>{{ chainId }}</p>
       <button @click="logout">
         Disconnect

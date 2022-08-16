@@ -6,7 +6,9 @@
     An error occurs :(
   </p>
   <div v-else>
-    <p v-if="!walletAddress"><strong>Connect wallet to continue</strong></p>
+    <p v-if="!walletAddress">
+      <strong>Connect wallet to continue</strong>
+    </p>
     <p v-else-if="walletAddress !== owner">
       <strong>Warning: You are not the owner of this ISCN</strong>
     </p>
@@ -14,11 +16,13 @@
     <p>Owner: {{ owner }}</p>
     <p>{{ contentMetadata.name }}</p>
     <label>Transfer to:
-      <input type="text" v-model="receiver">
+      <input v-model="receiver" type="text">
     </label>
-    <button @click="transfer" disable="owner !== walletAddress">Transfer</button>
+    <button disabled="owner !== walletAddress" @click="transfer">
+      Transfer
+    </button>
     <p v-if="owner !== walletAddress">
-      <strong>Alarm: You are not the owner of this record</strong>
+      <strong>Warning: You are not the owner of this ISCN</strong>
     </p>
     <p v-if="isSending">
       Sending...
@@ -66,7 +70,7 @@ export default {
   },
 
   methods: {
-    transfer() {
+    transfer () {
       this.$store.dispatch('wallet/transfer', {
         iscnId: this.iscnId,
         receiver: this.receiver,
