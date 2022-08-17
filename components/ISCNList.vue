@@ -22,7 +22,7 @@
         <th>URL</th>
         <th>Fingerprints</th>
       </tr>
-      <tr v-for="record in records" :key="record.iscn">
+      <tr v-for="record in records.filter(r => isValid(r))" :key="record.iscn">
         <td>{{ record.timestamp }}</td>
         <td>{{ record.contentMetadata.name }}</td>
         <td>
@@ -35,7 +35,7 @@
           </NuxtLink>
         </td>
         <td>
-          <a v-for="holder in record.stakeholders" :key="holder.entity.name">
+          <a v-for="holder in record.stakeholders.filter(s => s.entity)" :key="holder.entity.name">
             <NuxtLink
               :to="`/stakeholder/${encodeURIComponent(holder.entity.name)}`"
             >
@@ -195,6 +195,9 @@ export default {
         default:
           return [schema, `/fingerprint/${encodeURIComponent(fingerprint)}`]
       }
+    },
+    isValid (record) {
+      return record.contentMetadata && record.contentFingerprints && record.stakeholders
     },
   }
 }
