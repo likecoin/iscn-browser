@@ -18,7 +18,7 @@
     <label>Transfer to:
       <input v-model="receiver" type="text" size="40">
     </label>
-    <button @click="transfer">
+    <button class="button" @click="transfer">
       Transfer
     </button>
     <p v-if="isSending">

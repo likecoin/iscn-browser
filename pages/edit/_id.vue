@@ -6,7 +6,7 @@
     An error occurs :(
   </p>
   <div v-else>
-    <button @click="toggleMode">
+    <button class="button" @click="toggleMode">
       Change to {{ jsonMode ? "Field Mode" : "JSON Mode" }}
     </button>
     <div v-if="jsonMode">
@@ -18,7 +18,7 @@
       <p v-if="parseError">
         {{ parseError }}
       </p>
-      <button @click="save">
+      <button class="button" @click="save">
         Save
       </button>
       </h2>
@@ -74,12 +74,12 @@
           <div v-for="(keyword, i) in contentMetadata.keywords" :key="i" class="keyword">
             <p>
               <input v-model="contentMetadata.keywords[i]" type="text" size="50">
-              <button @click="deleteKeyword(i)">
+              <button class="button" @click="deleteKeyword(i)">
                 Delete
               </button>
             </p>
           </div>
-          <button @click="newKeyword">
+          <button class="button" @click="newKeyword">
             New Keyword
           </button>
         </div>
@@ -91,11 +91,11 @@
         >
           <label>{{ key }}:
             <input v-model="contentMetadata[key]" type="text" size="100">
-            <button @click="deleteField(key)">Delete</button>
+            <button class="button" @click="deleteField(key)">Delete</button>
           </label>
         </p>
         <input v-model="newField" type="text">
-        <button @click="addField">
+        <button class="button" @click="addField">
           Add field
         </button>
       </div>
@@ -123,11 +123,11 @@
               <input v-model="holder.rewardProportion" type="number">
             </label>
           </p>
-          <button @click="deleteStakeholer(i)">
+          <button class="button" @click="deleteStakeholer(i)">
             Delete
           </button>
         </div>
-        <button @click="newStakeholer">
+        <button class="button" @click="newStakeholer">
           New Stakeholder
         </button>
       </div>
@@ -136,11 +136,11 @@
       <div>
         <div v-for="(fingerprint, i) in contentFingerprints" :key="i" class="fingerprint">
           <p> <input v-model="contentFingerprints[i]" type="text" size="50"> </p>
-          <button @click="deleteFingerprint(i)">
+          <button class="button" @click="deleteFingerprint(i)">
             Delete
           </button>
         </div>
-        <button @click="newFingerprint">
+        <button class="button" @click="newFingerprint">
           New Fingerprint
         </button>
       </div>
@@ -151,7 +151,7 @@
       </p>
     </div>
 
-    <button :disabled="owner !== walletAddress" @click="updateISCN">
+    <button class="button" :disabled="owner !== walletAddress" @click="updateISCN">
       Update
     </button>
     <p v-if="owner !== walletAddress">

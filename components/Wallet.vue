@@ -7,11 +7,11 @@
         </NuxtLink>
       </p>
       <p>{{ chainId }}</p>
-      <button @click="logout">
+      <button class="button" @click="logout">
         Disconnect
       </button>
     </div>
-    <button v-else @click="connectWallet">
+    <button class="button" v-else @click="connectWallet">
       Connect
     </button>
   </div>
