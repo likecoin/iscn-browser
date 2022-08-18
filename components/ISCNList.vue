@@ -149,7 +149,7 @@ export default {
       const timestamp = datetime.toLocaleString()
       const iscn = data['@id']
       if (isDepub(data)) {
-        const re = RegExp('iscn://[^/]+/', 'g') // eslint-disable-line
+        const re = RegExp('iscn://[^/]+/', 'g') // eslint-disable-line prefer-regex-literals
         const depubUrl = iscn.replace(re, '')
         data.contentMetadata.url = `https://depub.space/${depubUrl}`
       }
