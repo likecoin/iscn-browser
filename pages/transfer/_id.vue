@@ -39,13 +39,14 @@
 
 <script>
 import { mapState } from 'vuex'
-import { validateAddress } from '@/utils/utils'
+import { validateAddress, getIscnPrefix } from '@/utils/utils'
 import { INDEXER } from '@/config'
 
 export default {
   name: 'EditISCN',
   data: () => ({
     iscnId: '',
+    iscnIdPrefix: '',
     owner: '',
     contentMetadata: {},
     receiver: '',
@@ -53,9 +54,11 @@ export default {
   }),
 
   async fetch () {
-    this.iscnId = this.$route.params.id
-    const res = await this.$axios.$get(`/iscn/records?iscn_id=${this.iscnId}`)
+    this.iscnIdPrefix = getIscnPrefix(this.$route.params.id)
+    // select newest version
+    const res = await this.$axios.$get(`/iscn/records?iscn_id_prefix=${this.iscnIdPrefix}&reverse=true&limit=1`)
     const record = res.records[0].data
+    this.iscnId = record['@id']
     Object.assign(this, record)
     this.contentMetadata.keywords = record.contentMetadata.keywords.split(',').filter(k => k !== '')
   },

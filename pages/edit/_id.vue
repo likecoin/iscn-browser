@@ -177,6 +177,7 @@
 <script>
 import { mapState } from 'vuex'
 import { INDEXER } from '@/config'
+import { getIscnPrefix } from '@/utils/utils'
 
 const WIDTH = 150
 
@@ -185,6 +186,7 @@ export default {
   data: () => ({
     INDEXER,
     iscnId: '',
+    iscnIdPrefix: '',
     owner: '',
     contentMetadata: {},
     stakeholders: {},
@@ -200,10 +202,11 @@ export default {
   }),
 
   async fetch () {
-    this.iscnId = this.$route.params.id
-    const res = await this.$axios.$get(`/iscn/records?iscn_id=${this.iscnId}`)
-    // this.owner = res.owner
+    this.iscnIdPrefix = getIscnPrefix(this.$route.params.id)
+    // select newest version
+    const res = await this.$axios.$get(`/iscn/records?iscn_id_prefix=${this.iscnIdPrefix}&reverse=true&limit=1`)
     const record = res.records[0].data
+    this.iscnId = record['@id']
     Object.assign(this, record)
     this.contentMetadata.keywords = record.contentMetadata.keywords.split(',').filter(k => k !== '')
   },

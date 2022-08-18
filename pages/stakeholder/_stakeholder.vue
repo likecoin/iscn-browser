@@ -12,7 +12,7 @@ export default {
     const stakeholder = this.$route.params.stakeholder
     return {
       stakeholder,
-      url: `/iscn/records?stakeholders.entity.name=${encodeURIComponent(
+      url: `/iscn/records?stakeholder.name=${encodeURIComponent(
         stakeholder,
       )}`,
     }

@@ -85,14 +85,14 @@
           <br>
           <NuxtLink
             v-if="walletAddress === record.owner"
-            :to="`/edit/${record.iscnEncoded}`"
+            :to="`/edit/${encodeURIComponent(getIscnPrefix(record.iscn))}`"
           >
             Edit
           </NuxtLink>
           <br>
           <NuxtLink
             v-if="walletAddress === record.owner"
-            :to="`/transfer/${record.iscnEncoded}`"
+            :to="`/transfer/${encodeURIComponent(getIscnPrefix(record.iscn))}`"
           >
             Transfer
           </NuxtLink>
@@ -112,6 +112,7 @@
 <script>
 import { mapState } from 'vuex'
 import { IPFS_GATEWAY, ARWEAVE_GATEWAY, INDEXER } from '../config.js'
+import { getIscnPrefix } from '@/utils/utils'
 
 function isDepub (record) {
   try {
@@ -170,6 +171,7 @@ export default {
     '$route.query.reverse': '$fetch',
   },
   methods: {
+    getIscnPrefix,
     domain_from_url: (url) => {
       try {
         const domain = new URL(url)
