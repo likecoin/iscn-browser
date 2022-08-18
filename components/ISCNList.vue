@@ -126,9 +126,7 @@ export default {
   data () {
     return {
       records: [],
-      page: 1,
       limit: 12,
-      pageCount: 0,
       next: '',
       previous: '',
       last: 0,
@@ -161,7 +159,6 @@ export default {
       }
       return { iscn, iscnEncoded: encodeURIComponent(iscn), timestamp, ...data }
     })
-    this.pageCount = Math.ceil(this.records.length / this.limit)
   },
   computed: {
     ...mapState('wallet', {
@@ -169,12 +166,10 @@ export default {
     }),
   },
   watch: {
-    '$route.query': '$fetch',
+    '$route.query.key': '$fetch',
+    '$route.query.reverse': '$fetch',
   },
   methods: {
-    changePage: (pageNum) => {
-      this.page = pageNum
-    },
     domain_from_url: (url) => {
       try {
         const domain = new URL(url)
