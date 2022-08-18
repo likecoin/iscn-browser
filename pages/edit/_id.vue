@@ -56,7 +56,7 @@
 
         <p>
           <label>version:
-            <input v-model="contentMetadata.version" type="number">
+            <input v-model.number="contentMetadata.version" type="number">
           </label>
         </p>
 
@@ -120,7 +120,7 @@
           </p>
           <p>
             <label>Reward Proportion:
-              <input v-model="holder.rewardProportion" type="number">
+              <input v-model.number="holder.rewardProportion" type="number">
             </label>
           </p>
           <button class="button" @click="deleteStakeholer(i)">
