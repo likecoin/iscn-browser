@@ -40,3 +40,7 @@ input, textarea {
   margin: 5px;
   padding-left: 3px;
 }
+
+.error {
+  color: red;
+}

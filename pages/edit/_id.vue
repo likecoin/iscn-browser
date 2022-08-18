@@ -25,7 +25,7 @@
     </div>
     <div v-else>
       <h1>Edit {{ iscnId }}</h1>
-      <p v-if="owner !== walletAddress">
+      <p v-if="owner !== walletAddress" class="error">
         <strong>Warning: You are not the owner of this record</strong>
       </p>
       <p>
@@ -154,7 +154,7 @@
     <button class="button" :disabled="owner !== walletAddress" @click="updateISCN">
       Update
     </button>
-    <p v-if="owner !== walletAddress">
+    <p v-if="owner !== walletAddress" class="error">
       <strong>Warning: You are not the owner of this record</strong>
     </p>
     <p v-if="isSending">
@@ -165,12 +165,12 @@
         {{ txHash }}
       </a>
     </p>
-    <p v-if="error">
+    <p v-if="error" class="error">
       {{ error }}
     </p>
 
     <h2>Output JSON</h2>
-    <pre><code>{{ toJSON() }}</code></pre>
+    <pre><code>{{ toJSON }}</code></pre>
   </div>
 </template>
 
@@ -206,7 +206,6 @@ export default {
     const record = res.records[0].data
     Object.assign(this, record)
     this.contentMetadata.keywords = record.contentMetadata.keywords.split(',').filter(k => k !== '')
-    console.log(this)
   },
 
   computed: {
@@ -219,9 +218,6 @@ export default {
     lines () {
       return this.rawJSON.split('\n').length
     },
-  },
-
-  methods: {
     toJSON () {
       const {
         contentMetadata, stakeholders, contentFingerprints, recordNotes,
@@ -236,6 +232,9 @@ export default {
         recordNotes,
       }, null, '\t')
     },
+  },
+
+  methods: {
     autoResize (event) {
       event.target.style.height = 'auto'
       event.target.style.height = `${event.target.scrollHeight}px`
@@ -308,7 +307,7 @@ export default {
       if (this.jsonMode) {
         if (!this.save()) { return }
       } else {
-        this.rawJSON = this.toJSON()
+        this.rawJSON = this.toJSON
       }
       this.jsonMode = !this.jsonMode
     },

@@ -8,7 +8,7 @@
   <p v-else-if="!walletAddress">
     <strong>Connect wallet to continue</strong>
   </p>
-  <p v-else-if="walletAddress !== owner">
+  <p v-else-if="walletAddress !== owner" class="error">
     <strong>You are not the owner of this ISCN</strong>
   </p>
   <div v-else>
