@@ -1,10 +1,11 @@
 const { NODE_ENV } = process.env
+export const ENV_DEV = 'development'
 export const IPFS_GATEWAY = 'https://cloudflare-ipfs.com'
 export const ARWEAVE_GATEWAY = 'https://arweave.net'
-export const INDEXER = NODE_ENV === 'development'
+export const INDEXER = NODE_ENV === ENV_DEV
   ? 'https://node.testnet.like.co'
   : 'https://mainnet-node.like.co'
-export const WALLET_CONFIG = NODE_ENV === 'development'
+export const WALLET_CONFIG = NODE_ENV === ENV_DEV
   ? {
       chainId: 'likecoin-public-testnet-5',
       chainName: 'LikeCoin',
