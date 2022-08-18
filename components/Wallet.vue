@@ -11,7 +11,7 @@
         Disconnect
       </button>
     </div>
-    <button class="button" v-else @click="connectWallet">
+    <button v-else class="button" @click="connectWallet">
       Connect
     </button>
   </div>

@@ -35,13 +35,13 @@
           </NuxtLink>
         </td>
         <td>
-          <a v-for="holder in record.stakeholders.filter(s => s.entity)" :key="holder.entity.name">
-            <NuxtLink
-              :to="`/stakeholder/${encodeURIComponent(holder.entity.name)}`"
-            >
-              {{ holder.entity.name }}
-            </NuxtLink>
-          </a>
+          <NuxtLink
+            v-for="holder in record.stakeholders.filter(s => s.entity)"
+            :key="holder.entity.name"
+            :to="`/stakeholder/${encodeURIComponent(holder.entity.name)}`"
+          >
+            {{ holder.entity.name }}
+          </NuxtLink>
         </td>
         <td>
           <NuxtLink :to="`/owner/${encodeURIComponent(record.owner)}`">
@@ -51,6 +51,7 @@
         <td>
           <a
             v-if="record.contentMetadata.url"
+            rel="noreferrer noopener"
             :href="record.contentMetadata.url"
             target="_blank"
           >
@@ -138,7 +139,6 @@ export default {
     const key = this.$route.query.key || 0
     this.reverse = this.$route.query.reverse !== 'false'
     const url = `${this.$props.url}&limit=${limit}&key=${key}&reverse=${this.reverse}`
-    console.log(url)
     const res = await this.$axios.$get(url)
     this.key = res.pagination.next_key
     this.records = res.records.map((record) => {
