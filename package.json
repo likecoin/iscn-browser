@@ -13,7 +13,7 @@
   "dependencies": {
     "@cosmjs/stargate": "^0.28.11",
     "@likecoin/iscn-js": "^0.2.1",
-    "@likecoin/wallet-connector": "https://github.com/nwingt/likecoin-wallet-connector",
+    "@likecoin/wallet-connector": "0.3.0-alpha.0",
     "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/proxy": "^2.1.0",
     "@nuxtjs/pwa": "^3.3.5",
