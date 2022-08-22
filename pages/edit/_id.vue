@@ -21,7 +21,6 @@
       <button class="button" @click="save">
         Save
       </button>
-      </h2>
     </div>
     <div v-else>
       <h1>Edit {{ iscnId }}</h1>

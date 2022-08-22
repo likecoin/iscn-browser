@@ -5,6 +5,9 @@ export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   target: 'static',
   ssr: false,
+  router: {
+    base: '/iscn-browser',
+  },
   head: {
     title: 'iscn-browser',
     meta: [
