@@ -8,6 +8,9 @@ export default {
   router: {
     base: '/iscn-browser',
   },
+  generate: {
+    fallback: '404.html',
+  },
   head: {
     title: 'iscn-browser',
     meta: [
