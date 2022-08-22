@@ -117,7 +117,15 @@
           </p>
           <p>
             <label>Contribution Type:
-              <input v-model="holder.contributionType" type="text" size="20">
+              <select v-model="holder.contributionType">
+                <option
+                  v-for="k in contributionTypes"
+                  :key="k"
+                  :value="`http://schema.org/${k}`"
+                >
+                  {{ k }}
+                </option>
+              </select>
             </label>
           </p>
           <p>
@@ -205,6 +213,13 @@ export default {
     rawJSON: '',
     parseError: '',
     WIDTH,
+    contributionTypes: [
+      'author',
+      'editor',
+      'publisher',
+      'creator',
+      'maintainer',
+    ],
   }),
 
   async fetch () {
