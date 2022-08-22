@@ -34,6 +34,7 @@
           {{ owner }}
         </NuxtLink>
       </p>
+      <hr>
       <h2>ContentMetadata</h2>
       <div>
         <p>
@@ -100,6 +101,7 @@
         </button>
       </div>
 
+      <hr>
       <h2>Stakeholders</h2>
       <div>
         <div v-for="(holder, i) in stakeholders" :key="i" class="stakeholder">
@@ -132,6 +134,7 @@
         </button>
       </div>
 
+      <hr>
       <h2>ContentFingerprints</h2>
       <div>
         <div v-for="(fingerprint, i) in contentFingerprints" :key="i" class="fingerprint">
@@ -145,12 +148,14 @@
         </button>
       </div>
 
+      <hr>
       <h2>Record Notes</h2>
       <p>
         <input v-model="recordNotes" type="text" size="20">
       </p>
     </div>
 
+    <hr>
     <button class="button" :disabled="owner !== walletAddress" @click="updateISCN">
       Update
     </button>
@@ -169,6 +174,7 @@
       {{ error }}
     </p>
 
+    <hr>
     <h2>Output JSON</h2>
     <pre><code>{{ toJSON }}</code></pre>
   </div>

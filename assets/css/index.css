@@ -44,3 +44,7 @@ input, textarea {
 .error {
   color: red;
 }
+
+hr {
+  margin: 10px;
+}
