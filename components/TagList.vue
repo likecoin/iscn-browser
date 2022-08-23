@@ -11,9 +11,9 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
-      keywords: ['LikeCoin', 'DHK', 'Cosmos'],
+      keywords: ['LikeCoin', 'DHK', 'Cosmos']
     }
   },
 }

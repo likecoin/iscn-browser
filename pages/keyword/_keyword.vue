@@ -8,11 +8,11 @@
 <script>
 export default {
   name: 'KeywordList',
-  data() {
+  data () {
     const keyword = this.$route.params.keyword
     return {
       keyword,
-      url: `/iscn/records?keywords=${encodeURIComponent(keyword)}`,
+      url: `/iscn/records?keyword=${encodeURIComponent(keyword)}`,
     }
   },
 }

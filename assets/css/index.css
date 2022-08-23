@@ -20,3 +20,47 @@ body {
   margin: 0 auto;
   max-width: 1160px;
 }
+
+a {
+  color: #28646e;
+  text-decoration: underline;
+}
+
+button.button {
+  background-color: #28646e;
+  color: white;
+  padding: 5px 10px;
+  margin: 3px;
+  border-radius: 4px;
+}
+
+button.button:disabled {
+  background-color: #58545e;
+  color: grey;
+  padding: 5px 10px;
+  margin: 3px;
+  border-radius: 4px;
+}
+
+input, textarea {
+  border: 2px solid grey;
+  border-radius: 4px;
+  margin: 5px;
+  padding-left: 3px;
+}
+
+.error {
+  color: red;
+}
+
+h1 {
+  font-size: 1.8em;
+}
+
+h2 {
+  font-size: 1.5em;
+}
+
+hr {
+  margin: 10px;
+}

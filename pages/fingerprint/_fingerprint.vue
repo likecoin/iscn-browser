@@ -8,7 +8,7 @@
 <script>
 export default {
   name: 'FingerprintList',
-  data() {
+  data () {
     const fingerprint = this.$route.params.fingerprint
     return {
       fingerprint,

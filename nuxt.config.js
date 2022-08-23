@@ -1,8 +1,16 @@
-process.env.DEBUG = 'nuxt:*'
+import { INDEXER, ENV_DEV } from './config.js'
+const { NODE_ENV } = process.env
+if (NODE_ENV === ENV_DEV) { process.env.DEBUG = 'nuxt:*' }
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   target: 'static',
   ssr: false,
+  router: {
+    base: '/iscn-browser',
+  },
+  generate: {
+    fallback: '404.html',
+  },
   head: {
     title: 'iscn-browser',
     meta: [
@@ -11,11 +19,14 @@ export default {
       { hid: 'description', name: 'description', content: '' },
       { name: 'format-detection', content: 'telephone=no' },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: ['~/assets/css/index'],
+  css: [
+    { src: '@likecoin/wallet-connector/dist/style.css', lang: 'css' },
+    '~/assets/css/index',
+  ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [],
@@ -42,8 +53,8 @@ export default {
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
     // baseURL: 'https://like.wancat.cc',
-    // baseURL: 'https://mainnet-node.like.co',
-    proxy: true,
+    baseURL: INDEXER,
+    // proxy: true,
   },
   proxy: [
     'http://127.0.0.1:8997/iscn/records',
