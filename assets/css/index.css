@@ -34,6 +34,14 @@ button.button {
   border-radius: 4px;
 }
 
+button.button:disabled {
+  background-color: #58545e;
+  color: grey;
+  padding: 5px 10px;
+  margin: 3px;
+  border-radius: 4px;
+}
+
 input, textarea {
   border: 2px solid grey;
   border-radius: 4px;
@@ -43,6 +51,14 @@ input, textarea {
 
 .error {
   color: red;
+}
+
+h1 {
+  font-size: 1.8em;
+}
+
+h2 {
+  font-size: 1.5em;
 }
 
 hr {

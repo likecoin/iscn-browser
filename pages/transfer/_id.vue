@@ -59,8 +59,8 @@ export default {
     const res = await this.$axios.$get(`/iscn/records?iscn_id_prefix=${this.iscnIdPrefix}&reverse=true&limit=1`)
     const record = res.records[0].data
     this.iscnId = record['@id']
-    Object.assign(this, record)
-    this.contentMetadata.keywords = record.contentMetadata.keywords.split(',').filter(k => k !== '')
+    this.owner = record.owner
+    this.contentMetadata = record.contentMetadata
   },
 
   computed: {

@@ -228,7 +228,7 @@ export default {
     const record = res.records[0].data
     this.iscnId = record['@id']
     Object.assign(this, record)
-    this.contentMetadata.keywords = record.contentMetadata.keywords.split(',').filter(k => k !== '')
+    this.contentMetadata.keywords = record.contentMetadata.keywords.split(',').filter(k => !!k)
   },
 
   computed: {
@@ -313,7 +313,7 @@ export default {
         } = JSON.parse(this.rawJSON)
         this.contentMetadata = {
           ...contentMetadata,
-          keywords: contentMetadata.keywords.split(',').filter(k => k !== ''),
+          keywords: contentMetadata.keywords.split(',').filter(k => !!k),
         }
         this.contentFingerprints = contentFingerprints
         this.stakeholders = stakeholders
