@@ -1,12 +1,11 @@
-import { INDEXER, ENV_DEV } from './config.js'
-const { NODE_ENV } = process.env
-if (NODE_ENV === ENV_DEV) { process.env.DEBUG = 'nuxt:*' }
+import { INDEXER, BASE_PATH, isDev } from './config.js'
+if (isDev) { process.env.DEBUG = 'nuxt:*' }
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   target: 'static',
   ssr: false,
   router: {
-    base: '/iscn-browser',
+    base: BASE_PATH,
   },
   generate: {
     fallback: '404.html',

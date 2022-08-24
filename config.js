@@ -1,8 +1,8 @@
 const { NODE_ENV } = process.env
-export const ENV_DEV = 'development'
 export const IPFS_GATEWAY = 'https://cloudflare-ipfs.com'
 export const ARWEAVE_GATEWAY = 'https://arweave.net'
-export const isDev = NODE_ENV === ENV_DEV
+export const isDev = NODE_ENV === 'development'
+export const BASE_PATH = '/iscn-browser'
 export const INDEXER = isDev
   ? 'https://node.testnet.like.co'
   : 'https://mainnet-node.like.co'

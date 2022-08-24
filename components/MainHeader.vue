@@ -9,7 +9,7 @@
     </header>
     <div>
       <WalletConnector />
-      <form action="/search">
+      <form :action="`${BASE_PATH}/search`">
         <label>Search: <input type="text" name="q"></label>
       </form>
     </div>
@@ -18,10 +18,16 @@
 
 <script>
 import WalletConnector from './Wallet.vue'
+import { BASE_PATH } from '@/config'
 export default {
   components: {
     WalletConnector,
   },
+  data () {
+    return {
+      BASE_PATH,
+    }
+  }
 }
 </script>
 
