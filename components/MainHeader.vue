@@ -9,7 +9,7 @@
       <div style="flex: 1" />
       <div>
         <a class="item-text" href="https://iscn.io" target="_blank">
-          ISCN specificaiton
+          ISCN specification
         </a>
       </div>
       <div>
