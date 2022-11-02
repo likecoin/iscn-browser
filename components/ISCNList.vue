@@ -199,14 +199,26 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 div.main {
   align-items: center;
 }
+
+table {
+  width: 100%;
+  table-layout: fixed;
+  overflow-wrap: break-word;
+}
+
 table, th, td {
   border: 1px solid black;
   border-collapse: collapse;
 }
+
+td a {
+  margin-left: 5px;
+}
+
 ul.pagination {
   display: inline-block;
   padding: 0;
