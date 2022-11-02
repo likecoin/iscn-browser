@@ -11,11 +11,16 @@ export default {
     fallback: '404.html',
   },
   head: {
-    title: 'iscn-browser',
+    title: 'ISCN Browser - powered by LikeCoin',
+    descrption: 'Search, browse and edit ISCN records stored on LikeCoin chain',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
+      { hid: 'description', name: 'description', content: 'Search, browse and edit ISCN records stored on LikeCoin chain' },
+      { hid: 'og:title', property: 'og:title', content: 'ISCN Browser - powered by LikeCoin' },
+      { hid: 'og:description', property: 'og:description', content: 'Search, browse and edit ISCN records stored on LikeCoin chain' },
+      { hid: 'og:image', property: 'og:image', content: 'https://iscn.io/images/logo-white.png' },
+      { hid: 'theme-color', name: 'theme-color', content: '#28646e' },
       { name: 'format-detection', content: 'telephone=no' },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
