@@ -6,8 +6,19 @@
           ISCN Browser
         </NuxtLink>
       </div>
+      <div style="flex: 1" />
+      <div>
+        <a class="item-text" href="https://iscn.io" target="_blank">
+          ISCN specificaiton
+        </a>
+      </div>
+      <div>
+        <a class="item-text" href="https://like.co" target="_blank">
+          About LikeCoin
+        </a>
+      </div>
     </header>
-    <div>
+    <div style="margin-left: 20px; margin-right: 20px">
       <WalletConnector />
       <form :action="`${BASE_PATH}/search`">
         <label>Search: <input type="text" name="q"></label>
@@ -60,5 +71,11 @@ header {
   --tw-gradient-stops: var(--tw-gradient-from),
     var(--tw-gradient-to, rgba(210, 240, 240, 0));
   background-image: linear-gradient(to right, var(--tw-gradient-stops));
+}
+
+.item-text {
+  margin-left: 10px;
+  margin-right: 10px;
+  color: #EBEBEB;
 }
 </style>
