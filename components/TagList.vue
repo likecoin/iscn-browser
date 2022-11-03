@@ -18,9 +18,13 @@ export default {
   },
 }
 </script>
-<style>
+<style scoped>
+li {
+  list-style-type: circle;
+}
+
 .tags {
-  margin-top: 20px;
+  margin: 10px;
 }
 /* text style */
 </style>
