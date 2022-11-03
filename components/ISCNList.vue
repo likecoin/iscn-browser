@@ -60,10 +60,10 @@
         </td>
         <td v-if="record.contentFingerprints">
           <a
-            v-for="[schema, link] in record.contentFingerprints.map(fingerprintLink)"
+            v-for="[schema, link, target] in record.contentFingerprints.map(fingerprintLink)"
             :key="schema"
             :href="link"
-            target="blank"
+            :target="target"
           >
             {{ schema }}
           </a>
@@ -183,13 +183,13 @@ export default {
       const [schema, value] = fingerprint.split('://')
       switch (schema) {
         case 'ipfs':
-          return [schema, `${IPFS_GATEWAY}/ipfs/${value}`]
+          return [schema, `${IPFS_GATEWAY}/ipfs/${value}`, 'blank']
 
         case 'ar':
-          return [schema, `${ARWEAVE_GATEWAY}/${value}`]
+          return [schema, `${ARWEAVE_GATEWAY}/${value}`, 'blank']
 
         default:
-          return [schema, `/fingerprint/${encodeURIComponent(fingerprint)}`]
+          return [schema, `./fingerprint/${encodeURIComponent(fingerprint)}`, '']
       }
     },
     isValid (record) {

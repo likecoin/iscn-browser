@@ -3,7 +3,7 @@
     <h3>Featured Keywords</h3>
     <ul>
       <li v-for="keyword in keywords" :key="keyword">
-        <a :href="`/keyword/${keyword}`">{{ keyword }}</a>
+        <a :href="`./keyword/${keyword}`">{{ keyword }}</a>
       </li>
     </ul>
   </div>
