@@ -24,7 +24,14 @@
       </tr>
       <tr v-for="record in records.filter(r => isValid(r))" :key="record.iscn">
         <td>{{ record.timestamp }}</td>
-        <td>{{ record.contentMetadata.name }}</td>
+        <td>
+          <a
+            target="_blank"
+            :href="`https://app.like.co/view/${record.iscnEncoded}`"
+          >
+            {{ record.contentMetadata.name }}
+          </a>
+        </td>
         <td>
           <NuxtLink
             v-for="keyword in record.contentMetadata.keywords"
@@ -69,20 +76,7 @@
           </a>
         </td>
         <td v-else />
-        <td>
-          <a
-            target="_blank"
-            :href="`https://app.like.co/view/${record.iscnEncoded}`"
-          >Detail
-          </a>
-          <br>
-          <a
-            target="_blank"
-            :href="`${INDEXER}/iscn/records?iscn_id=${record.iscn}`"
-          >
-            RawData
-          </a>
-          <br>
+        <td v-if="walletAddress">
           <NuxtLink
             v-if="walletAddress === record.owner"
             :to="`/edit/${encodeURIComponent(getIscnPrefix(record.iscn))}`"
