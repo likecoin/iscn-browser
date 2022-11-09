@@ -1,6 +1,9 @@
-name: cd
+name: CD
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - deploy
 
 jobs:
   cd:
@@ -13,10 +16,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@v3
 
       - name: Setup node env
-        uses: actions/setup-node@v2.1.2
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
 
