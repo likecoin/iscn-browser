@@ -7,7 +7,7 @@
 
 <script>
 export default {
-  name: 'Search',
+  name: 'SearchPage',
   data () {
     const q = this.$route.query.q
     return {

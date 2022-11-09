@@ -117,7 +117,10 @@ function isDepub (record) {
 }
 export default {
   props: {
-    url: String,
+    url: {
+      type: String,
+      default: ''
+    },
   },
   data () {
     return {

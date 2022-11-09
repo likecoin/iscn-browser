@@ -105,6 +105,7 @@ export const actions = {
       commit('doneTx', result)
     } catch (err) {
       commit('setError', err)
+      // eslint-disable-next-line no-console
       console.error(err)
     }
   },
@@ -131,6 +132,7 @@ export const actions = {
       commit('doneTx', result)
     } catch (err) {
       commit('setError', err)
+      // eslint-disable-next-line no-console
       console.error(err)
     }
   },
