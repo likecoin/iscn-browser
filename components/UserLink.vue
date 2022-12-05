@@ -5,6 +5,8 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
+
 export default {
   name: 'UserLink',
   props: {
@@ -14,12 +16,16 @@ export default {
     },
   },
   computed: {
+    ...mapGetters('userInfo', ['getLikerIdByAddress']),
     likerId () {
-      return this.$store.getters['userInfo/getLikerIdByAddress'](this.wallet)
+      return this.getLikerIdByAddress(this.wallet)
     },
   },
   mounted () {
-    this.$store.dispatch('userInfo/fetchLikerIdByAddress', this.wallet)
+    this.fetchLikerIdByAddress(this.wallet)
+  },
+  methods: {
+    ...mapActions('userInfo', ['fetchLikerIdByAddress']),
   },
 }
 </script>
