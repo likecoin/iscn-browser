@@ -51,9 +51,7 @@
           </NuxtLink>
         </td>
         <td>
-          <NuxtLink :to="`/owner/${encodeURIComponent(record.owner)}`">
-            {{ record.owner }}
-          </NuxtLink>
+          <UserLink :wallet="record.owner" />
         </td>
         <td>
           <a

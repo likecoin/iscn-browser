@@ -29,9 +29,7 @@
       </p>
       <p>
         Owner:
-        <NuxtLink :to="`/owner/${encodeURIComponent(owner)}`">
-          {{ owner }}
-        </NuxtLink>
+        <UserLink :wallet="owner" />
       </p>
       <hr>
       <h2>ContentMetadata</h2>
