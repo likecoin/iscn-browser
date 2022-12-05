@@ -1,4 +1,5 @@
 const { NODE_ENV } = process.env
+export const API_PUBLIC_URL = 'https://api.like.co'
 export const IPFS_GATEWAY = 'https://cloudflare-ipfs.com'
 export const ARWEAVE_GATEWAY = 'https://arweave.net'
 export const isDev = NODE_ENV === 'development'
