@@ -1,13 +1,13 @@
-const { NODE_ENV } = process.env
+const { NODE_ENV, IS_TESTNET } = process.env
 export const API_PUBLIC_URL = 'https://api.like.co'
 export const IPFS_GATEWAY = 'https://cloudflare-ipfs.com'
 export const ARWEAVE_GATEWAY = 'https://arweave.net'
 export const isDev = NODE_ENV === 'development'
-export const BASE_PATH = '/iscn-browser'
-export const INDEXER = isDev
+export const BASE_PATH = process.env.BASE_PATH
+export const INDEXER = IS_TESTNET
   ? 'https://node.testnet.like.co'
   : 'https://mainnet-node.like.co'
-export const WALLET_CONFIG = isDev
+export const WALLET_CONFIG = IS_TESTNET
   ? {
       chainId: 'likecoin-public-testnet-5',
       chainName: 'LikeCoin',

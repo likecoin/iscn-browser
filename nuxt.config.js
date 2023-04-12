@@ -1,6 +1,9 @@
 import { INDEXER, BASE_PATH, isDev } from './config.js'
 if (isDev) { process.env.DEBUG = 'nuxt:*' }
 export default {
+  env: {
+    IS_TESTNET: process.env.IS_TESTNET || false,
+  },
   // Global page headers: https://go.nuxtjs.dev/config-head
   target: 'static',
   ssr: false,

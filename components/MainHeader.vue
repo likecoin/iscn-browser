@@ -1,10 +1,11 @@
 <template>
   <div>
     <header>
-      <div>
+      <div class="header-title">
         <NuxtLink class="gradient-text" to="/">
           ISCN Browser
         </NuxtLink>
+        <span>{{ chainId }}</span>
       </div>
       <div style="flex: 1" />
       <div>
@@ -29,7 +30,7 @@
 
 <script>
 import WalletConnector from './Wallet.vue'
-import { BASE_PATH } from '@/config'
+import { BASE_PATH, WALLET_CONFIG } from '@/config'
 export default {
   components: {
     WalletConnector,
@@ -38,6 +39,11 @@ export default {
     return {
       BASE_PATH,
     }
+  },
+  computed: {
+    chainId () {
+      return WALLET_CONFIG.chainId
+    },
   }
 }
 </script>
@@ -61,7 +67,7 @@ header {
   margin-left: 10px;
   font-size: 64px;
   color: transparent;
-  line-height: 1.35;
+  line-height: 1;
   font-weight: 600;
   font-size: 48px;
   background-clip: text;
@@ -77,5 +83,18 @@ header {
   margin-left: 10px;
   margin-right: 10px;
   color: #EBEBEB;
+}
+
+.header-title {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+}
+
+.header-title span {
+  margin-left: 16px;
+  color: #EBEBEB;
+  font-size: 14px;
+  line-height: 1.65;
 }
 </style>
