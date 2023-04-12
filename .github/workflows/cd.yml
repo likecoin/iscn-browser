@@ -27,7 +27,7 @@ jobs:
         run: yarn
 
       - name: Generate
-        run: yarn generate
+        run: BASE_PATH=/iscn-browser yarn generate
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
