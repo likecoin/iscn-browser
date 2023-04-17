@@ -1,4 +1,5 @@
-const { NODE_ENV, IS_TESTNET } = process.env
+const NODE_ENV = process.env.NODE_ENV
+const IS_TESTNET = process.env.IS_TESTNET
 export const API_PUBLIC_URL = 'https://api.like.co'
 export const IPFS_GATEWAY = 'https://cloudflare-ipfs.com'
 export const ARWEAVE_GATEWAY = 'https://arweave.net'
