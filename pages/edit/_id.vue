@@ -82,6 +82,21 @@
           </button>
         </div>
 
+        <p>sameAs URLs</p>
+        <div>
+          <div v-for="(sameAs, i) in contentMetadata.sameAs" :key="i" class="sameAs">
+            <p>
+              <input v-model="contentMetadata.sameAs[i]" type="text" size="50">
+              <button class="button" @click="deleteSameAs(i)">
+                Delete
+              </button>
+            </p>
+          </div>
+          <button class="button" @click="newSameAs">
+            New sameAs URL
+          </button>
+        </div>
+
         <p
           v-for="[key] in Object.entries(contentMetadata).filter(
             ([k]) => !(defaultFields.includes(k) || excludeFields.includes(k)))"
@@ -187,6 +202,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import Vue from 'vue'
 import { INDEXER } from '@/config'
 import { getIscnPrefix } from '@/utils/utils'
 
@@ -203,7 +219,7 @@ export default {
     stakeholders: {},
     contentFingerprints: {},
     recordNotes: '',
-    defaultFields: ['@type', 'description', 'url', 'name', 'keywords', 'version', 'usageInfo'],
+    defaultFields: ['@type', 'description', 'url', 'name', 'keywords', 'sameAs', 'version', 'usageInfo'],
     excludeFields: ['@context'],
     newField: '',
     jsonMode: false,
@@ -226,7 +242,8 @@ export default {
     const record = res.records[0].data
     this.iscnId = record['@id']
     Object.assign(this, record)
-    this.contentMetadata.keywords = record.contentMetadata.keywords.split(',').filter(k => !!k)
+    Vue.set(this.contentMetadata, 'keywords', record.contentMetadata.keywords.split(',').filter(k => !!k))
+    Vue.set(this.contentMetadata, 'sameAs', record.contentMetadata.sameAs || [])
   },
 
   computed: {
@@ -247,6 +264,7 @@ export default {
         contentMetadata: {
           ...contentMetadata,
           keywords: contentMetadata.keywords.join(','),
+          sameAs: contentMetadata.sameAs.filter(s => !!s),
         },
         stakeholders,
         contentFingerprints,
@@ -277,6 +295,12 @@ export default {
     },
     newKeyword () {
       this.contentMetadata.keywords.push('')
+    },
+    deleteSameAs (i) {
+      this.contentMetadata.sameAs = this.contentMetadata.sameAs.filter((_, j) => j !== i)
+    },
+    newSameAs () {
+      this.contentMetadata.sameAs.push('')
     },
     addField () {
       this.contentMetadata[this.newField] = ''
@@ -312,6 +336,7 @@ export default {
         this.contentMetadata = {
           ...contentMetadata,
           keywords: contentMetadata.keywords.split(',').filter(k => !!k),
+          sameAs: contentMetadata.sameAs.filter(s => !!s),
         }
         this.contentFingerprints = contentFingerprints
         this.stakeholders = stakeholders
