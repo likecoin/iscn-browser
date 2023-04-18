@@ -335,7 +335,7 @@ export default {
         } = JSON.parse(this.rawJSON)
         this.contentMetadata = {
           ...contentMetadata,
-          keywords: contentMetadata.keywords.split(',').filter(k => !!k),
+          keywords: Array.isArray(contentMetadata.keywords) ? contentMetadata.keywords.filter(k => !!k) : contentMetadata.keywords.split(',').filter(k => !!k),
           sameAs: contentMetadata.sameAs.filter(s => !!s),
         }
         this.contentFingerprints = contentFingerprints
