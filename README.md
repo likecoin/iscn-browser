@@ -1,5 +1,10 @@
 # iscn-browser
 
+Mainnet: https://likecoin.github.io/iscn-browser/
+Testnet: https://likecoin-iscn-browser-testnet.netlify.app/
+
+Simple web app for listing, managing and editing [ISCN](https://docs.like.co/general-guides/decentralized-publishing/what-is-iscn) on [LikeCoin chain](https://like.co).
+
 ## Build Setup
 
 ```bash
