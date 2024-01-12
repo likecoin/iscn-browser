@@ -1,6 +1,6 @@
 import { LikeCoinWalletConnector, LikeCoinWalletConnectorMethod } from '@likecoin/wallet-connector'
 import { ISCNSigningClient } from '@likecoin/iscn-js'
-import { WALLET_CONFIG } from '../config'
+import { WALLET_CONFIG, DEFAULT_GAS_PRICE_NUMBER } from '../config'
 
 let connector = null
 
@@ -101,6 +101,7 @@ export const actions = {
         state.walletAddress,
         iscnId,
         payload,
+        { gasPrice: DEFAULT_GAS_PRICE_NUMBER },
       )
       commit('doneTx', result)
     } catch (err) {
@@ -128,6 +129,7 @@ export const actions = {
         state.walletAddress,
         receiver,
         iscnId,
+        { gasPrice: DEFAULT_GAS_PRICE_NUMBER },
       )
       commit('doneTx', result)
     } catch (err) {

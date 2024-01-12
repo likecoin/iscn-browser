@@ -8,6 +8,7 @@ export const BASE_PATH = process.env.BASE_PATH
 export const INDEXER = IS_TESTNET
   ? 'https://node.testnet.like.co'
   : 'https://mainnet-node.like.co'
+export const DEFAULT_GAS_PRICE_NUMBER = 10000
 export const WALLET_CONFIG = IS_TESTNET
   ? {
       chainId: 'likecoin-public-testnet-5',
