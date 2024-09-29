@@ -1,7 +1,7 @@
 const NODE_ENV = process.env.NODE_ENV
 const IS_TESTNET = process.env.IS_TESTNET
 export const API_PUBLIC_URL = 'https://api.like.co'
-export const IPFS_GATEWAY = 'https://cloudflare-ipfs.com'
+export const IPFS_GATEWAY = 'https://w3s.link'
 export const ARWEAVE_GATEWAY = 'https://arweave.net'
 export const isDev = NODE_ENV === 'development'
 export const BASE_PATH = process.env.BASE_PATH
