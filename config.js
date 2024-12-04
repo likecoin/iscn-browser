@@ -12,7 +12,7 @@ export const DEFAULT_GAS_PRICE_NUMBER = 10000
 export const WALLET_CONFIG = IS_TESTNET
   ? {
       chainId: 'likecoin-public-testnet-5',
-      chainName: 'LikeCoin',
+      chainName: 'LikeCoin Testnet',
       rpcURL: 'https://node.testnet.like.co/rpc/',
       restURL: 'https://node.testnet.like.co',
       coinType: 118,

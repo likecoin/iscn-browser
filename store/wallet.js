@@ -1,4 +1,4 @@
-import { LikeCoinWalletConnector, LikeCoinWalletConnectorMethod } from '@likecoin/wallet-connector'
+import { LikeCoinWalletConnector, LikeCoinWalletConnectorMethodType } from '@likecoin/wallet-connector'
 import { ISCNSigningClient } from '@likecoin/iscn-js'
 import { WALLET_CONFIG, DEFAULT_GAS_PRICE_NUMBER } from '../config'
 
@@ -65,10 +65,14 @@ export const actions = {
   init ({ commit }) {
     connector = new LikeCoinWalletConnector({
       availableMethods: [
-        LikeCoinWalletConnectorMethod.Keplr,
-        LikeCoinWalletConnectorMethod.KeplrMobile,
-        LikeCoinWalletConnectorMethod.LikerId,
-        LikeCoinWalletConnectorMethod.Cosmostation,
+        LikeCoinWalletConnectorMethodType.LikerId,
+        LikeCoinWalletConnectorMethodType.Keplr,
+        LikeCoinWalletConnectorMethodType.KeplrMobile,
+        LikeCoinWalletConnectorMethodType.Cosmostation,
+        LikeCoinWalletConnectorMethodType.LikerLandApp,
+        LikeCoinWalletConnectorMethodType.Leap,
+        LikeCoinWalletConnectorMethodType.MetaMaskLeap,
+        LikeCoinWalletConnectorMethodType.CosmostationMobile
       ],
       ...WALLET_CONFIG,
     })
