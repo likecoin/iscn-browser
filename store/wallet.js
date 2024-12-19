@@ -96,7 +96,7 @@ export const actions = {
     commit('prepareTx')
     const client = new ISCNSigningClient()
     await client.connectWithSigner(
-      connector.rpcURL,
+      connector.options.rpcURL,
       state.offlineSigner,
     )
 
@@ -124,7 +124,7 @@ export const actions = {
     commit('prepareTx')
     const client = new ISCNSigningClient()
     await client.connectWithSigner(
-      connector.rpcURL,
+      connector.options.rpcURL,
       state.offlineSigner,
     )
 
